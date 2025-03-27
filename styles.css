@@ -1,0 +1,341 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Pastikan tidak ada overflow */
+html, body {
+    width: 100%;
+    overflow-x: hidden; /* Mencegah scroll horizontal */
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #c4a47c;
+    padding: 10px 20px;
+    color: white;
+    width: 100%;
+}
+
+/* Logo */
+.logo img {
+    height: 40px;
+}
+
+/* Navigasi */
+.nav-right {
+    display: flex;
+    align-items: center;
+    margin-right: 85px; /* Menambahkan margin kanan untuk memberikan lebih banyak ruang */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 0 5px; /* Mengurangi margin antar item navigasi */
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+/* Tombol Notifikasi & Akun */
+.notif-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: black;
+}
+
+.akun-container {
+    position: relative;
+    display: inline-block;
+}
+
+.akun-btn {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Dropdown Akun */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    min-width: 180px; /* Lebar minimum agar dropdown tidak terpotong */
+    z-index: 1000;
+    overflow: visible;
+    padding: 10px;
+}
+
+.dropdown-menu p {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: black;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background-color: #f1f1f1;
+}
+
+.logout-btn {
+    display: block;
+    width: 100%;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    margin-top: 5px;
+    border-radius: 3px;
+}
+
+.logout-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Tampilkan dropdown saat tombol akun diklik */
+.show {
+    display: block;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    background: url('background.png') no-repeat center center/cover;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 50px;
+}
+
+/* Posisi Teks di Kiri Atas */
+.hero-content {
+    position: absolute;
+    top: 80px;
+    left: 50px;
+    z-index: 2;
+    color: black;
+    max-width: 500px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.hero h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.hero p {
+    font-size: 18px;
+}
+
+/* Tombol Daftar di Kiri Atas */
+.daftar-btn {
+    position: absolute;
+    top: 140px;
+    left: 50px;
+    background-color: #1a73e8;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 3;
+}
+
+/* Antrian Section */
+.antrian-section {
+    background-color: #dcdcdc;
+    padding: 20px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.antrian-container {
+    margin: 0 auto;
+    width: 80%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: #dcdcdc;
+    color: black;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    transition: 0.3s;
+}
+
+/* Cek Posisi Antrian */
+.search-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.search-box input {
+    padding: 8px;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-btn {
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Footer */
+.footer {
+    background-color: #c4a47c;
+    color: black;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+/* Struktur Footer */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Menyamakan ukuran logo */
+.footer-logos {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-logo {
+    height: 80px; /* Ukuran seragam */
+}
+
+/* Layanan Footer */
+.footer-right {
+    text-align: left;
+}
+
+.footer-right h3 {
+    font-weight: bold;
+}
+
+.footer-right ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-right ul li {
+    margin: 5px 0;
+}
+
+.footer-right ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Bagian bawah footer */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid black;
+}
+
+/* Hak Cipta di Kiri */
+.footer-copyright {
+    text-align: left;
+}
+
+/* Media Sosial di Kanan */
+.footer-social {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Menyamakan ukuran ikon media sosial */
+.social-icon {
+    width: 50px; /* Ukuran seragam */
+    height: 50px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.social-icon:hover {
+    transform: scale(1.1);
+}

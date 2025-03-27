@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinoman - Sistem Informasi</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dropdown Pendaftaran */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Tampilkan dropdown saat diklik */
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="sinoman.png" alt="Sinoman">
+        </div>
+        <div class="nav-right">
+            <nav>
+                <ul>
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#antrian">Antrian</a></li>
+                    <!-- Dropdown Pendaftaran -->
+                    <li class="dropdown">
+                        <a href="#" id="pendaftaranBtn">Pendaftaran ⌵</a>
+                        <div class="dropdown-menu" id="pendaftaranDropdown">
+                            <a href="formulir_data_diri.html">Formulir Data Diri</a>
+                            <a href="responden.html">Formulir Pertanyaan</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <button class="notif-btn">🔔</button>
+            
+            <!-- Tombol Akun (Tidak Diubah) -->
+            <div class="akun-container">
+                <button class="akun-btn" id="akunBtn">Akun</button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <p>Nama User</p>
+                    <hr>
+                    <a href="profil.html">Profil</a>
+                    <a href="pengaturan.html">Pengaturan</a>
+                    <button class="logout-btn">Keluar</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>SINOMAN</h1>
+            <p>Sistem Informasi Antrean Omah Transparan</p>
+            <p><i>Solusi terintegrasi dan transparan dalam sistem antrian perumahan</i></p>
+            <button class="daftar-btn">DAFTAR</button>
+        </div>
+    </section>
+
+    <!-- Antrian Section -->
+    <section id="antrian" class="antrian-section">
+        <h2 class="antrian-title">Dashboard Antrian Perumahan</h2>
+        <div class="antrian-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Urutan</th>
+                        <th>Nama</th>
+                        <th>Rumah Tidak Layak</th>
+                        <th>MBR</th>
+                        <th>Pekerjaan</th>
+                        <th>Status Pernikahan</th>
+                        <th>Skor</th>
+                    </tr>
+                </thead>
+                <tbody id="queueTable">
+                    <tr>
+                        <td colspan="7" class="loading-text">Memuat data antrian...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Cek Posisi Antrian -->
+    <div class="search-container">
+        <p>Cek Posisi Antrian Anda</p>
+        <div class="search-box">
+            <input type="text" placeholder="🔍 Masukkan nama">
+            <button class="search-btn">Cari Posisi</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Logo di tengah -->
+            <div class="footer-left">
+                <div class="footer-logos">
+                    <img src="sinoman.png" alt="Sinoman" class="footer-logo">
+                </div>
+                <div class="footer-logos">
+                    <img src="pupr.png" alt="PUPR" class="footer-logo">
+                    <img src="utdi.png" alt="UTDI" class="footer-logo">
+                </div>
+            </div>
+
+            <!-- Layanan di kiri -->
+            <div class="footer-right">
+                <h3>Layanan</h3>
+                <ul>
+                    <li><a href="#">Konsultasi</a></li>
+                    <li><a href="#">Masukan & Saran</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bagian bawah footer -->
+        <div class="footer-bottom">
+            <!-- Teks Hak Cipta di Kiri -->
+            <div class="footer-copyright">
+                <p>© 2025 | Balai Pelaksana Penyedia Perumahan Jawa III</p>
+            </div>
+
+            <!-- Ikon Media Sosial di Kanan -->
+            <div class="footer-social">
+                <a href="https://www.instagram.com" target="_blank">
+                    <img src="ig.png" alt="Instagram" class="social-icon">
+                </a>
+                <a href="https://www.facebook.com" target="_blank">
+                    <img src="fb.png" alt="Facebook" class="social-icon">
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank">
+                    <img src="wa.png" alt="WhatsApp" class="social-icon">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fungsi menampilkan dropdown pendaftaran saat diklik
+        document.getElementById("pendaftaranBtn").addEventListener("click", function(event) {
+            event.preventDefault(); // Mencegah reload halaman
+            let dropdown = document.getElementById("pendaftaranDropdown");
+            dropdown.classList.toggle("show");
+        });
+
+        // Tampilkan/Tutup dropdown akun saat tombol diklik (Tidak Diubah)
+        document.getElementById("akunBtn").addEventListener("click", function(event) {
+            event.stopPropagation(); // Mencegah klik keluar langsung menutup
+            let dropdown = document.getElementById("dropdownMenu");
+            dropdown.classList.toggle("show");
+        });
+
+        // Tutup dropdown jika klik di luar
+        document.addEventListener("click", function(event) {
+            let dropdown = document.getElementById("dropdownMenu");
+            let akunBtn = document.getElementById("akunBtn");
+            let pendaftaranDropdown = document.getElementById("pendaftaranDropdown");
+
+            if (!akunBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove("show");
+            }
+
+            if (!document.getElementById("pendaftaranBtn").contains(event.target) && !pendaftaranDropdown.contains(event.target)) {
+                pendaftaranDropdown.classList.remove("show");
+            }
+        });
+    </script>
+
+</body>
+</html>

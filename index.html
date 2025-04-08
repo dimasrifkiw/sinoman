@@ -319,8 +319,7 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <i class="fas fa-home text-2xl"></i>
-                    <h1 class="text-2xl font-bold">SINOMAN</h1>
+                    <img  src="sinoman.png" alt="logo sinoman" class="h-10">
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="#home" class="nav-link">Beranda</a>
@@ -393,19 +392,6 @@
                 
                 <div class="text-center text-sm text-gray-600 mb-4">
                     Belum punya akun? <a href="#" id="showRegistration" class="text-blue-600 hover:underline">Daftar sekarang</a>
-                </div>
-                
-                <div class="divider">
-                    <span class="divider-text">Atau masuk dengan</span>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4 mt-4">
-                    <button type="button" class="social-login-btn google">
-                        <i class="fab fa-google mr-2"></i> Google
-                    </button>
-                    <button type="button" class="social-login-btn facebook">
-                        <i class="fab fa-facebook-f mr-2"></i> Facebook
-                    </button>
                 </div>
             </form>
         </div>
@@ -535,31 +521,32 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="gradient-bg text-white py-16 md:py-24">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6">Sistem Informasi Antrean Omah Transparan</h1>
-                <p class="text-xl mb-8">Solusi terintegrasi dan transparan untuk sistem antrian perumahan bagi masyarakat berpenghasilan rendah (MBR).</p>
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button id="registerNowButton" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition flex items-center justify-center">
-                        <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
-                    </button>
-                    <button class="border-2 border-white px-6 py-3 rounded-full font-bold hover:bg-white hover:text-blue-600 transition flex items-center justify-center">
-                        <i class="fas fa-info-circle mr-2"></i> Pelajari Lebih Lanjut
-                    </button>
+    <!-- Ganti bagian Hero Section dengan ini -->
+        <section id="home" class="relative py-16 md:py-24 text-white">
+            <!-- Background Image -->
+                <div class="absolute inset-0 z-0">
+                <img src="background.png" 
+                    alt="Background Perumahan" 
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-blue-900 opacity-70"></div>
                 </div>
-            </div>
-            <div class="md:w-1/2 flex justify-center">
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by-wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Rumah MBR" class="rounded-lg shadow-2xl w-full max-w-md">
-                    <div class="absolute -bottom-5 -right-5 bg-yellow-400 text-gray-800 px-6 py-3 rounded-lg shadow-lg font-bold queue-animation">
-                        <i class="fas fa-users mr-2"></i> 1.245 Antrian
-                    </div>
+    
+    <!-- Konten -->
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center relative z-10">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Sistem Informasi Antrean Omah Transparan</h1>
+            <p class="text-xl mb-8">Solusi terintegrasi dan transparan untuk sistem antrian perumahan bagi masyarakat berpenghasilan rendah (MBR).</p>
+            <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button id="registerNowButton" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition flex items-center justify-center">
+                  <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
+                </button>
+                <div class="bg-yellow-400 text-gray-800 px-6 py-3 rounded-lg shadow-lg font-bold flex items-center queue-animation">
+                  <i class="fas fa-users mr-2"></i> 1.245 Antrian
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Features Section -->
     <section id="features" class="py-16 bg-white">

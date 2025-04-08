@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinoman - Sistem Informasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Dropdown Pendaftaran */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Tampilkan dropdown saat diklik */
+        .show {
+            display: block;
+        }
+
+        /* Modal Konfirmasi Keluar */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-btn.no {
+            background-color: #f1f1f1;
+        }
+
+        .modal-btn.yes {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-50px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .input-group label {
+            position: absolute;
+            left: 0.75rem;
+            top: 0.75rem;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            background-color: white;
+            padding: 0 0.25rem;
+        }
+        
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: #3b82f6;
+        }
+        
+        .social-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .social-login-btn:hover {
+            background-color: #f9fafb;
+        }
+        
+        .social-login-btn.google {
+            color: #db4437;
+        }
+        
+        .social-login-btn.facebook {
+            color: #4267B2;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #e5e7eb;
+        }
+        
+        .divider-text {
+            padding: 0 1rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            z-index: 50;
+            padding: 0.5rem 0;
+        }
+        
+        .user-dropdown.active {
+            display: block;
+        }
+        
+        .user-dropdown a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #4b5563;
+            transition: all 0.2s ease;
+        }
+        
+        .user-dropdown a:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+         /* Queue Result Styles */
+         .queue-result {
+            display: none;
+            background-color: #3b82f6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .queue-result.active {
+            display: block;
+        }
+
+        .queue-position {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-align: center;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="sinoman.png" alt="Sinoman">
+        </div>
+        <div class="nav-right">
+            <nav>
+                <ul>
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#antrian">Antrian</a></li>
+                    <!-- Dropdown Pendaftaran -->
+                    <li class="dropdown">
+                        <a href="#" id="pendaftaranBtn">Pendaftaran ⌵</a>
+                        <div class="dropdown-menu" id="pendaftaranDropdown">
+                            <a href="formulir_data_diri.html">Formulir Data Diri</a>
+                            <a href="responden.html">Formulir Pertanyaan</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <button class="notif-btn">🔔</button>
+            
+            <!-- Tombol Akun -->
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button id="loginButton" class="bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-blue-50 transition">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Masuk
+                    </button>
+                    <div id="userDropdown" class="user-dropdown">
+                        <a href="#" class="flex items-center">
+                            <i class="fas fa-user-circle mr-2"></i> Profil Saya
+                        </a>
+                        <a href="#" class="flex items-center">
+                            <i class="fas fa-home mr-2"></i> Status Antrian
+                        </a>
+                        <a href="#" class="flex items-center">
+                            <i class="fas fa-cog mr-2"></i> Pengaturan
+                        </a>
+                        <div class="border-t border-gray-200 my-1"></div>
+                        <a href="#" id="logoutButton" class="flex items-center text-red-500">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Keluar
+                        </a>
+                    </div>
+                </div>
+                <button class="md:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal Konfirmasi Keluar -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h3>Yakin keluar?</h3>
+            <div class="modal-buttons">
+                <button class="modal-btn no" id="cancelLogout">Tidak</button>
+                <button class="modal-btn yes" id="confirmLogout">Ya</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>SINOMAN</h1>
+            <p>Sistem Informasi Antrean Omah Transparan</p>
+            <p><i>Solusi terintegrasi dan transparan dalam sistem antrian perumahan</i></p>
+            <button class="daftar-btn">DAFTAR</button>
+        </div>
+    </section>
+
+    <!-- Antrian Section -->
+    <section id="antrian" class="antrian-section">
+        <h2 class="antrian-title">Dashboard Antrian Perumahan</h2>
+        <div class="antrian-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Urutan</th>
+                        <th>Nama</th>
+                        <th>Rumah Tidak Layak</th>
+                        <th>MBR</th>
+                        <th>Pekerjaan</th>
+                        <th>Status Pernikahan</th>
+                        <th>Skor</th>
+                    </tr>
+                </thead>
+                <tbody id="queueTable">
+                    <tr>
+                        <td colspan="7" class="loading-text">Memuat data antrian...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Queue Check Section -->
+    <section id="queue" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-8 text-white shadow-lg">
+                <h2 class="text-2xl font-bold mb-6">Cek Posisi Antrian Anda</h2>
+                <p class="mb-8">Masukkan nomor pendaftaran atau NIK Anda untuk memeriksa posisi antrian saat ini.</p>
+                
+                <div class="flex flex-col md:flex-row gap-4">
+                    <input type="text" id="queueNumber" placeholder="Nomor Pendaftaran / NIK" class="flex-grow px-4 py-3 rounded-lg text-gray-800">
+                    <button id="checkQueue" class="bg-yellow-400 text-gray-800 px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition flex items-center justify-center">
+                        <i class="fas fa-search mr-2"></i> Cek Sekarang
+                    </button>
+                </div>
+                
+                <div id="queueResult" class="queue-result">
+                    <h3 class="text-lg font-semibold mb-2">Status Antrian Anda</h3>
+                    <p id="queueNumberDisplay" class="text-sm opacity-80"></p>
+                    <div class="queue-position" id="queuePosition"></div>
+                    <p class="text-center">Total antrian saat ini: <span id="totalQueue">1,245</span> orang</p>
+                    <div class="mt-4 bg-white bg-opacity-20 p-3 rounded-lg">
+                        <p class="text-sm">Estimasi waktu tunggu: <span id="waitTime">3-6 bulan</span></p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-white bg-opacity-20 p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">Status Antrian Terkini</h3>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm">Total Pendaftar</p>
+                            <p class="text-xl font-bold">3,245</p>
+                        </div>
+                        <div>
+                            <p class="text-sm">Dalam Proses</p>
+                            <p class="text-xl font-bold">1,128</p>
+                        </div>
+                        <div>
+                            <p class="text-sm">Terverifikasi</p>
+                            <p class="text-xl font-bold">876</p>
+                        </div>
+                        <div>
+                            <p class="text-sm">Diterima</p>
+                            <p class="text-xl font-bold">542</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Logo di tengah -->
+            <div class="footer-left">
+                <div class="footer-logos">
+                    <img src="sinoman.png" alt="Sinoman" class="footer-logo">
+                </div>
+                <div class="footer-logos">
+                    <img src="pupr.png" alt="PUPR" class="footer-logo">
+                    <img src="utdi.png" alt="UTDI" class="footer-logo">
+                </div>
+            </div>
+
+            <!-- Layanan di kiri -->
+            <div class="footer-right">
+                <h3>Layanan</h3>
+                <ul>
+                    <li><a href="#">Konsultasi</a></li>
+                    <li><a href="#">Masukan & Saran</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bagian bawah footer -->
+        <div class="footer-bottom">
+            <!-- Teks Hak Cipta di Kiri -->
+            <div class="footer-copyright">
+                <p>© 2025 | Balai Pelaksana Penyedia Perumahan Jawa III</p>
+            </div>
+
+            <!-- Ikon Media Sosial di Kanan -->
+            <div class="footer-social">
+                <a href="https://www.instagram.com" target="_blank">
+                    <img src="ig.png" alt="Instagram" class="social-icon">
+                </a>
+                <a href="https://www.facebook.com" target="_blank">
+                    <img src="fb.png" alt="Facebook" class="social-icon">
+                </a>
+                <a href="https://wa.me/6281234567890" target="_blank">
+                    <img src="wa.png" alt="WhatsApp" class="social-icon">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+        <!-- Back to Top Button -->
+        <button id="backToTop" class="fixed bottom-8 right-8 bg-blue-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+    <script>
+       // Login System
+       const loginButton = document.getElementById('loginButton');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginForm = document.getElementById('loginForm');
+        const userDropdown = document.getElementById('userDropdown');
+        const logoutButton = document.getElementById('logoutButton');
+        
+        // Check if user is logged in from localStorage
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        
+        // Update UI based on login status
+        function updateLoginStatus() {
+            if (isLoggedIn) {
+                loginButton.innerHTML = '<i class="fas fa-user-circle mr-2"></i>Akun Saya';
+                loginButton.classList.remove('bg-white', 'text-blue-600');
+                loginButton.classList.add('bg-blue-700', 'text-white');
+            } else {
+                loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Masuk';
+                loginButton.classList.remove('bg-blue-700', 'text-white');
+                loginButton.classList.add('bg-white', 'text-blue-600');
+            }
+        }
+        
+        // Initialize
+        updateLoginStatus();
+        
+        // Toggle login modal
+        loginButton.addEventListener('click', function(e) {
+            if (isLoggedIn) {
+                // Toggle dropdown if logged in
+                userDropdown.classList.toggle('active');
+            } else {
+                // Show login modal if not logged in
+                loginModal.classList.add('active');
+                setTimeout(() => {
+                    document.querySelector('.modal-content').style.transform = 'translateY(0)';
+                    document.querySelector('.modal-content').style.opacity = '1';
+                }, 10);
+            }
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            loginModal.classList.remove('active');
+            document.querySelector('.modal-content').style.transform = 'translateY(-50px)';
+            document.querySelector('.modal-content').style.opacity = '0';
+        });
+        
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (username && password) {
+                // In a real app, you would send this to a server
+                // For demo purposes, we'll just simulate a successful login
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Update UI
+                updateLoginStatus();
+                
+                // Close modal
+                loginModal.classList.remove('active');
+                
+                // Show success message
+                alert('Login berhasil! Selamat datang kembali.');
+            } else {
+                alert('Silakan isi nama pengguna dan kata sandi.');
+            }
+        });
+        
+        // Logout
+        logoutButton.addEventListener('click', function() {
+            isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            updateLoginStatus();
+            userDropdown.classList.remove('active');
+            alert('Anda telah keluar dari sistem.');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.relative') && userDropdown.classList.contains('active')) {
+                userDropdown.classList.remove('active');
+            }
+        });
+
+        // Queue Check System
+        const checkQueueButton = document.getElementById('checkQueue');
+        const queueNumberInput = document.getElementById('queueNumber');
+        const queueResult = document.getElementById('queueResult');
+        const queueNumberDisplay = document.getElementById('queueNumberDisplay');
+        const queuePosition = document.getElementById('queuePosition');
+        const totalQueue = document.getElementById('totalQueue');
+        const waitTime = document.getElementById('waitTime');
+
+        // Dummy queue positions
+        const dummyQueues = {
+            '111': 10,
+            '222': 31,
+            '333': 5
+        };
+
+        checkQueueButton.addEventListener('click', function() {
+            const queueNumber = queueNumberInput.value.trim();
+            
+            if (!queueNumber) {
+                alert('Silakan masukkan nomor pendaftaran atau NIK Anda.');
+                return;
+            }
+            
+            // Check if the input matches any dummy queue
+            if (dummyQueues.hasOwnProperty(queueNumber)) {
+                queueNumberDisplay.textContent = `Nomor Pendaftaran: ${queueNumber}`;
+                queuePosition.textContent = dummyQueues[queueNumber];
+                
+                // Set different wait times based on position
+                if (dummyQueues[queueNumber] <= 10) {
+                    waitTime.textContent = '1-2 bulan';
+                } else if (dummyQueues[queueNumber] <= 30) {
+                    waitTime.textContent = '3-5 bulan';
+                } else {
+                    waitTime.textContent = '6-12 bulan';
+                }
+                
+                queueResult.classList.add('active');
+            } else {
+                alert('Nomor pendaftaran/NIK tidak ditemukan. Pastikan Anda telah mendaftar.');
+                queueResult.classList.remove('active');
+            }
+        });
+
+        // Registration System
+        const registerNowButton = document.getElementById('registerNowButton');
+        const registrationModal = document.getElementById('registrationModal');
+        const closeRegistration = document.getElementById('closeRegistration');
+        const showRegistration = document.getElementById('showRegistration');
+        const registrationForm = document.getElementById('registrationForm');
+        
+        // Open registration modal
+        registerNowButton.addEventListener('click', function() {
+            registrationModal.classList.add('active');
+            setTimeout(() => {
+                document.querySelector('.registration-content').style.transform = 'translateY(0)';
+                document.querySelector('.registration-content').style.opacity = '1';
+            }, 10);
+        });
+        
+        // Also from login modal
+        showRegistration.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginModal.classList.remove('active');
+            registrationModal.classList.add('active');
+            setTimeout(() => {
+                document.querySelector('.registration-content').style.transform = 'translateY(0)';
+                document.querySelector('.registration-content').style.opacity = '1';
+            }, 10);
+        });
+        
+        // Close registration modal
+        closeRegistration.addEventListener('click', function() {
+            registrationModal.classList.remove('active');
+            document.querySelector('.registration-content').style.transform = 'translateY(-50px)';
+            document.querySelector('.registration-content').style.opacity = '0';
+        });
+        
+        // Multi-step form functionality
+        const formSteps = document.querySelectorAll('.form-step');
+        const steps = document.querySelectorAll('.step');
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        let currentStep = 0;
+        
+        // Initialize form steps
+        function showStep(stepIndex) {
+            formSteps.forEach((step, index) => {
+                if (index === stepIndex) {
+                    step.classList.add('active');
+                    steps[index].classList.add('active');
+                    
+                    // Mark previous steps as completed
+                    for (let i = 0; i < index; i++) {
+                        steps[i].classList.remove('active');
+                        steps[i].classList.add('completed');
+                    }
+                    
+                    // Reset future steps
+                    for (let i = index + 1; i < steps.length; i++) {
+                        steps[i].classList.remove('active', 'completed');
+                    }
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+        
+        // Next button click
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Validate current step before proceeding
+                if (validateStep(currentStep)) {
+                    if (currentStep < formSteps.length - 1) {
+                        currentStep++;
+                        showStep(currentStep);
+                        
+                        // Update confirmation data on last step
+                        if (currentStep === 2) {
+                            updateConfirmationData();
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Previous button click
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (currentStep > 0) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            });
+        });
+        
+        // Simple validation for each step
+        function validateStep(stepIndex) {
+            let isValid = true;
+            
+            if (stepIndex === 0) {
+                const fullName = document.getElementById('fullName').value;
+                const nik = document.getElementById('nik').value;
+                const birthDate = document.getElementById('birthDate').value;
+                const address = document.getElementById('address').value;
+                
+                if (!fullName || !nik || !birthDate || !address) {
+                    alert('Silakan lengkapi semua informasi pribadi.');
+                    isValid = false;
+                } else if (nik.length !== 16) {
+                    alert('NIK harus terdiri dari 16 digit.');
+                    isValid = false;
+                }
+            } else if (stepIndex === 1) {
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const username = document.getElementById('usernameReg').value;
+                const password = document.getElementById('passwordReg').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (!email || !phone || !username || !password || !confirmPassword) {
+                    alert('Silakan lengkapi semua informasi akun.');
+                    isValid = false;
+                } else if (password !== confirmPassword) {
+                    alert('Kata sandi dan konfirmasi kata sandi tidak cocok.');
+                    isValid = false;
+                } else if (password.length < 6) {
+                    alert('Kata sandi harus terdiri dari minimal 6 karakter.');
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // Update confirmation data
+        function updateConfirmationData() {
+            document.getElementById('confirmFullName').textContent = document.getElementById('fullName').value;
+            document.getElementById('confirmNik').textContent = document.getElementById('nik').value;
+            document.getElementById('confirmBirthDate').textContent = document.getElementById('birthDate').value;
+            document.getElementById('confirmAddress').textContent = document.getElementById('address').value;
+            document.getElementById('confirmEmail').textContent = document.getElementById('email').value;
+            document.getElementById('confirmPhone').textContent = document.getElementById('phone').value;
+            document.getElementById('confirmUsername').textContent = document.getElementById('usernameReg').value;
+        }
+        
+        // Form submission
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Check if terms are agreed
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.');
+                return;
+            }
+            
+            // In a real app, you would send the data to a server here
+            // For demo purposes, we'll just show a success message
+            
+            // Close registration modal
+            registrationModal.classList.remove('active');
+            
+            // Show success message
+            alert('Pendaftaran berhasil! Anda sekarang dapat masuk menggunakan akun yang telah dibuat.');
+            
+            // Reset form
+            registrationForm.reset();
+            currentStep = 0;
+            showStep(currentStep);
+            
+            // Mark user as logged in
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            updateLoginStatus();
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.bg-white button').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    content.classList.add('hidden');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+        });
+    });
+});
+    </script>
+
+</body>
+</html>

@@ -199,7 +199,7 @@
         /* Queue Result Styles */
         .queue-result {
             display: none;
-            background-color: white;
+            background-color: #3b82f6;
             padding: 1.5rem;
             border-radius: 0.5rem;
             margin-top: 1rem;
@@ -219,7 +219,7 @@
         .queue-position {
             font-size: 2rem;
             font-weight: bold;
-            color: #3b82f6;
+            color: #ffffff;
             text-align: center;
             margin: 1rem 0;
         }
@@ -311,6 +311,121 @@
             background-color: #10b981;
             color: white;
         }
+
+            /* Image Carousel Styles */
+            .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 400px;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .carousel-caption h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carousel-nav button {
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-nav button:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .carousel {
+                height: 300px;
+            }
+            
+            .carousel-caption h3 {
+                font-size: 1.2rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -319,7 +434,7 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <img  src="D:\snm\coba\sinoman.png" alt="logo sinoman" class="h-10">
+                    <img  src="D:\sinoman\coba\sinoman.png" alt="logo sinoman" class="h-10">
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="#home" class="nav-link">Beranda</a>
@@ -525,7 +640,7 @@
         <section id="home" class="relative py-16 md:py-24 text-white">
             <!-- Background Image -->
                 <div class="absolute inset-0 z-0">
-                <img src="D:\snm\coba\background.jpeg" 
+                <img src="D:\sinoman\coba\background.jpeg" 
                     alt="Background Perumahan" 
                     class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-blue-900 opacity-70"></div>
@@ -692,72 +807,119 @@
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="py-16 bg-gray-50">
+       <!-- Image Carousel Section -->
+       <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Apa Kata Mereka?</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Testimoni dari masyarakat yang telah menggunakan SINOMAN</p>
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Galeri Perumahan MBR</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Lihat contoh perumahan yang telah dibangun untuk masyarakat berpenghasilan rendah</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Testimoni" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-bold">Siti Rahayu</h4>
-                            <p class="text-sm text-gray-500">Penerima Rumah MBR 2023</p>
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Perumahan MBR 1">
+                        <div class="carousel-caption">
+                            <h3>Perumahan MBR Tipe 36</h3>
+                            <p>Perumahan dengan luas bangunan 36m² yang nyaman dan terjangkau</p>
                         </div>
                     </div>
-                    <p class="text-gray-600">"Prosesnya sangat transparan, saya bisa memantau perkembangan antrian kapan saja. Akhirnya setelah 1 tahun antri, saya dapat rumah yang layak untuk keluarga."</p>
-                    <div class="mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Perumahan MBR 2">
+                        <div class="carousel-caption">
+                            <h3>Kawasan Perumahan MBR</h3>
+                            <p>Lingkungan yang asri dengan fasilitas umum yang memadai</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Perumahan MBR 3">
+                        <div class="carousel-caption">
+                            <h3>Interior Rumah MBR</h3>
+                            <p>Desain interior yang fungsional untuk keluarga kecil</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Testimoni" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-bold">Budi Santoso</h4>
-                            <p class="text-sm text-gray-500">Calon Penerima Rumah</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">"Sistem verifikasi otomatis sangat membantu. Dokumen saya langsung terverifikasi tanpa harus antri panjang di kantor. Sekarang tinggal menunggu giliran."</p>
-                    <div class="mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
+                <div class="carousel-nav">
+                    <button id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                    <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Testimoni" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-bold">Dewi Anggraeni</h4>
-                            <p class="text-sm text-gray-500">Ibu Rumah Tangga</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">"Notifikasi dari sistem sangat membantu. Saya selalu dapat update terbaru tentang antrian via WhatsApp. Tidak perlu khawatir ketinggalan informasi penting."</p>
-                    <div class="mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </div>
+                <div class="carousel-indicators">
+                    <div class="carousel-indicator active" data-slide="0"></div>
+                    <div class="carousel-indicator" data-slide="1"></div>
+                    <div class="carousel-indicator" data-slide="2"></div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Fitur Unggulan SINOMAN</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Sistem yang dirancang khusus untuk memberikan kemudahan dan transparansi dalam proses antrian perumahan MBR.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-gray-50 p-8 rounded-xl transition duration-300 hover:shadow-md">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-user-edit text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Pendaftaran Online</h3>
+                    <p class="text-gray-600">Daftar secara online dengan mudah, lengkapi data pribadi, unggah dokumen, dan pilih lokasi perumahan yang diinginkan.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-gray-50 p-8 rounded-xl transition duration-300 hover:shadow-md">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-list-ol text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Manajemen Antrian</h3>
+                    <p class="text-gray-600">Sistem mengurutkan calon penghuni berdasarkan kriteria seperti status ekonomi dan prioritas keluarga secara adil.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-gray-50 p-8 rounded-xl transition duration-300 hover:shadow-md">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Transparansi Data</h3>
+                    <p class="text-gray-600">Pantau posisi antrian secara real-time melalui dashboard yang interaktif dan mudah dipahami.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card bg-gray-50 p-8 rounded-xl transition duration-300 hover:shadow-md">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-check-circle text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Verifikasi Otomatis</h3>
+                    <p class="text-gray-600">Terintegrasi dengan database pemerintah untuk memverifikasi data calon penghuni secara otomatis dan akurat.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card bg-gray-50 p-8 rounded-xl transition duration-300 hover:shadow-md">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-bell text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Notifikasi</h3>
+                    <p class="text-gray-600">Dapatkan pemberitahuan tentang perkembangan antrian, jadwal verifikasi, dan informasi penting lainnya.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card bg-gray-50 p-8 rounded-xl transition duration-300 hover:shadow-md">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-headset text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Pengaduan & Bantuan</h3>
+                    <p class="text-gray-600">Fitur pengaduan dan pusat bantuan online untuk memastikan Anda mendapatkan dukungan yang dibutuhkan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
         </div>
     </section>
 
@@ -1340,8 +1502,93 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
+
             });
         });
+        // Image Carousel Functionality
+        const carousel = document.getElementById('carousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        let currentSlide = 0;
+        const slideCount = document.querySelectorAll('.carousel-slide').length;
+        let autoSlideInterval;
+
+        // Function to go to a specific slide
+        function goToSlide(index) {
+            if (index < 0) {
+                index = slideCount - 1;
+            } else if (index >= slideCount) {
+                index = 0;
+            }
+            
+            currentSlide = index;
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update indicators
+            indicators.forEach((indicator, i) => {
+                if (i === currentSlide) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        // Next slide
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        // Previous slide
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        // Start auto sliding
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 5000);
+        }
+
+        // Stop auto sliding
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Event listeners for buttons
+        nextBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            nextSlide();
+            startAutoSlide();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            prevSlide();
+            startAutoSlide();
+        });
+
+        // Event listeners for indicators
+        indicators.forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                stopAutoSlide();
+                goToSlide(parseInt(indicator.dataset.slide));
+                startAutoSlide();
+            });
+        });
+
+        // Start auto sliding on page load
+        startAutoSlide();
+
+        // Pause auto sliding when mouse is over carousel
+        document.querySelector('.carousel-container').addEventListener('mouseenter', stopAutoSlide);
+        document.querySelector('.carousel-container').addEventListener('mouseleave', startAutoSlide);
+
+        // Touch events for mobile swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener
     </script>
 </body>
 </html>

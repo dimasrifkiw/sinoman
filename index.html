@@ -9,6 +9,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         
+        header {
+            position: fixed; /* Make header fixed */
+            top: 0;
+            left: 0;
+            right: 0; /* Make sure it spans the full width */
+            z-index: 1000; /* Ensure it is on top of other content */
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8fafc;

@@ -1119,31 +1119,37 @@
         });
         
         // Login form submission
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Simple validation
-            if (username && password) {
-                // In a real app, you would send this to a server
-                // For demo purposes, we'll just simulate a successful login
-                isLoggedIn = true;
-                localStorage.setItem('isLoggedIn', 'true');
-                
-                // Update UI
-                updateLoginStatus();
-                
-                // Close modal
-                loginModal.classList.remove('active');
-                
-                // Show success message
-                alert('Login berhasil! Selamat datang kembali.');
-            } else {
-                alert('Silakan isi nama pengguna dan kata sandi.');
-            }
-        });
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+        // Simple validation
+    if (username && password) {
+        // Check for admin credentials
+        if (username === 'admin1' && password === 'adminsinoman') {
+            // Redirect to admin page
+            window.location.href = 'admin.html';
+            return;
+        }
+        
+        // For other users (existing logic)
+        isLoggedIn = true;
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // Update UI
+        updateLoginStatus();
+        
+        // Close modal
+        loginModal.classList.remove('active');
+        
+        // Show success message
+        alert('Login berhasil! Selamat datang kembali.');
+    } else {
+        alert('Silakan isi nama pengguna dan kata sandi.');
+    }
+});
         
         // Logout
         logoutButton.addEventListener('click', function() {

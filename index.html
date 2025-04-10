@@ -475,44 +475,44 @@
     </header>
 
     <!-- Login Modal -->
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800">Masuk ke SINOMAN</h2>
-            <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <form id="loginForm">
-            <div class="input-group">
-                <input type="text" id="username" name="username" placeholder=" " required>
-                <label for="username">Nama Pengguna atau Email</label>
-            </div>
-
-            <div class="input-group">
-                <input type="password" id="password" name="password" placeholder=" " required>
-                <label for="password">Kata Sandi</label>
-            </div>
-
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
-                <div class="flex items-center">
-                    <input type="checkbox" id="remember" class="mr-2">
-                    <label for="remember" class="text-sm text-gray-600">Ingat saya</label>
+                <h2 class="text-2xl font-bold text-gray-800">Masuk ke SINOMAN</h2>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder=" " required>
+                    <label for="username">Nama Pengguna atau Email</label>
                 </div>
-                <a href="#" class="text-sm text-blue-600 hover:underline">Lupa kata sandi?</a>
-            </div>
-
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition mb-4">
-                Masuk
-            </button>
-
-            <div class="text-center text-sm text-gray-600 mb-4">
-                Belum punya akun? <a href="#" id="showRegistration" class="text-blue-600 hover:underline">Daftar sekarang</a>
-            </div>
-        </form>
+                
+                <div class="input-group">
+                    <input type="password" id="password" placeholder=" " required>
+                    <label for="password">Kata Sandi</label>
+                </div>
+                
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        <label for="remember" class="text-sm text-gray-600">Ingat saya</label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:underline">Lupa kata sandi?</a>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition mb-4">
+                    Masuk
+                </button>
+                
+                <div class="text-center text-sm text-gray-600 mb-4">
+                    Belum punya akun? <a href="#" id="showRegistration" class="text-blue-600 hover:underline">Daftar sekarang</a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <!-- Registration Modal -->
     <div id="registrationModal" class="registration-modal">
@@ -530,28 +530,28 @@
                 <div class="step" id="step3">3</div>
             </div>
 
-            <form id="registrationForm" action="register.php" method="post">
+            <form id="registrationForm">
                 <!-- Step 1: Personal Information -->
                 <div class="form-step active" id="formStep1">
                     <h3 class="text-lg font-semibold mb-4">Informasi Pribadi</h3>
                     
                     <div class="input-group mb-4">
-                        <input type="text" id="fullName" name="fullName" placeholder=" " required>
+                        <input type="text" id="fullName" placeholder=" " required>
                         <label for="fullName">Nama Lengkap</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="text" id="nik" name="nik" placeholder=" " required>
+                        <input type="text" id="nik" placeholder=" " required>
                         <label for="nik">NIK</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="date" id="birthDate" name="birthDate" placeholder=" " required>
+                        <input type="date" id="birthDate" placeholder=" " required>
                         <label for="birthDate">Tanggal Lahir</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="text" id="address" name="address" placeholder=" " required>
+                        <input type="text" id="address" placeholder=" " required>
                         <label for="address">Alamat</label>
                     </div>
                     
@@ -561,33 +561,33 @@
                         </button>
                     </div>
                 </div>
-            
+
                 <!-- Step 2: Account Information -->
                 <div class="form-step" id="formStep2">
                     <h3 class="text-lg font-semibold mb-4">Informasi Akun</h3>
                     
                     <div class="input-group mb-4">
-                        <input type="email" id="email" name="email" placeholder=" " required>
+                        <input type="email" id="email" placeholder=" " required>
                         <label for="email">Email</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="text" id="phone" name="phone" placeholder=" " required>
+                        <input type="text" id="phone" placeholder=" " required>
                         <label for="phone">Nomor Telepon</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="text" id="usernameReg" name="username" placeholder=" " required>
+                        <input type="text" id="usernameReg" placeholder=" " required>
                         <label for="usernameReg">Nama Pengguna</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="password" id="passwordReg" name="password" placeholder=" " required>
+                        <input type="password" id="passwordReg" placeholder=" " required>
                         <label for="passwordReg">Kata Sandi</label>
                     </div>
                     
                     <div class="input-group mb-4">
-                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required>
+                        <input type="password" id="confirmPassword" placeholder=" " required>
                         <label for="confirmPassword">Konfirmasi Kata Sandi</label>
                     </div>
                     
@@ -600,7 +600,7 @@
                         </button>
                     </div>
                 </div>
-            
+
                 <!-- Step 3: Confirmation -->
                 <div class="form-step" id="formStep3">
                     <h3 class="text-lg font-semibold mb-4">Konfirmasi Data</h3>
@@ -621,7 +621,7 @@
                     </div>
                     
                     <div class="flex items-center mb-4">
-                        <input type="checkbox" id="agreeTerms" name="agreeTerms" class="mr-2" required>
+                        <input type="checkbox" id="agreeTerms" class="mr-2" required>
                         <label for="agreeTerms" class="text-sm">Saya menyetujui <a href="#" class="text-blue-600 hover:underline">Syarat dan Ketentuan</a> yang berlaku</label>
                     </div>
                     
@@ -634,7 +634,7 @@
                         </button>
                     </div>
                 </div>
-            </form>            
+            </form>
         </div>
     </div>
 
@@ -1042,11 +1042,12 @@
                 <div>
                     <h4 class="text-lg font-bold mb-4">Dokumen</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-white-400 hover:text-white transition">Syarat dan Ketentuan</a></li>
-                        <li><a href="#" class="text-white-400 hover:text-white transition">Kebijakan Privasi</a></li>
-                        <li><a href="#" class="text-white-400 hover:text-white transition">Panduan Pengguna</a></li>
-                        <li><a href="#" class="text-white-400 hover:text-white transition">FAQ</a></li>
+                        <li><a href="javascript:void(0);" onclick="openDocumentModal('terms')" class="text-white/70 hover:text-white transition">Syarat dan Ketentuan</a></li>
+                        <li><a href="javascript:void(0);" onclick="openDocumentModal('privacy')" class="text-white/70 hover:text-white transition">Kebijakan Privasi</a></li>
+                        <li><a href="javascript:void(0);" onclick="openDocumentModal('guide')" class="text-white/70 hover:text-white transition">Panduan Pengguna</a></li>
+                        <li><a href="javascript:void(0);" onclick="openDocumentModal('faq')" class="text-white/70 hover:text-white transition">FAQ</a></li>
                     </ul>
+                      
                 </div>
                 </div>
             </div>
@@ -1068,89 +1069,81 @@
     </button>
 
     <script>
-    // Login System
-    const loginButton = document.getElementById('loginButton');
-    const loginModal = document.getElementById('loginModal');
-    const closeModal = document.getElementById('closeModal');
-    const loginForm = document.getElementById('loginForm');
-    const userDropdown = document.getElementById('userDropdown');
-    const logoutButton = document.getElementById('logoutButton');
-
-    // Check if user is logged in from localStorage
-    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    // Update UI based on login status
-    function updateLoginStatus() {
-        if (isLoggedIn) {
-            loginButton.innerHTML = '<i class="fas fa-user-circle mr-2"></i>Akun Saya';
-            loginButton.classList.remove('bg-white', 'text-blue-600');
-            loginButton.classList.add('bg-blue-700', 'text-white');
-        } else {
-            loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Masuk';
-            loginButton.classList.remove('bg-blue-700', 'text-white');
-            loginButton.classList.add('bg-white', 'text-blue-600');
+        // Login System
+        const loginButton = document.getElementById('loginButton');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginForm = document.getElementById('loginForm');
+        const userDropdown = document.getElementById('userDropdown');
+        const logoutButton = document.getElementById('logoutButton');
+        
+        // Check if user is logged in from localStorage
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        
+        // Update UI based on login status
+        function updateLoginStatus() {
+            if (isLoggedIn) {
+                loginButton.innerHTML = '<i class="fas fa-user-circle mr-2"></i>Akun Saya';
+                loginButton.classList.remove('bg-white', 'text-blue-600');
+                loginButton.classList.add('bg-blue-700', 'text-white');
+            } else {
+                loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Masuk';
+                loginButton.classList.remove('bg-blue-700', 'text-white');
+                loginButton.classList.add('bg-white', 'text-blue-600');
+            }
         }
-    }
-
-    // Initialize
-    updateLoginStatus();
-
-    // Toggle login modal
-    loginButton.addEventListener('click', function (e) {
-        if (isLoggedIn) {
-            // Toggle dropdown if logged in
-            userDropdown.classList.toggle('active');
-        } else {
-            // Show login modal if not logged in
-            loginModal.classList.add('active');
-            setTimeout(() => {
-                document.querySelector('.modal-content').style.transform = 'translateY(0)';
-                document.querySelector('.modal-content').style.opacity = '1';
-            }, 10);
-        }
-    });
-
-    // Close modal
-    closeModal.addEventListener('click', function () {
-        loginModal.classList.remove('active');
-        document.querySelector('.modal-content').style.transform = 'translateY(-50px)';
-        document.querySelector('.modal-content').style.opacity = '0';
-    });
-
-    // Login form submission
-    loginForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-
-        fetch('login.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-        })
-            .then(res => {
-                if (!res.ok) throw res;
-                return res.text();
-            })
-            .then(response => {
-                if (response === 'login_success') {
-                    isLoggedIn = true;
-                    localStorage.setItem('isLoggedIn', 'true');
-                    updateLoginStatus();
-                    loginModal.classList.remove('active');
-                    alert('Login berhasil! Selamat datang kembali.');
-                } else {
-                    alert(response); // misalnya: "Akun belum terdaftar", "Password salah"
-                }
-            })
-            .catch(async (err) => {
-                const message = await err.text();
-                alert(message || 'Terjadi kesalahan saat login.');
-            });
-    });
+        
+        // Initialize
+        updateLoginStatus();
+        
+        // Toggle login modal
+        loginButton.addEventListener('click', function(e) {
+            if (isLoggedIn) {
+                // Toggle dropdown if logged in
+                userDropdown.classList.toggle('active');
+            } else {
+                // Show login modal if not logged in
+                loginModal.classList.add('active');
+                setTimeout(() => {
+                    document.querySelector('.modal-content').style.transform = 'translateY(0)';
+                    document.querySelector('.modal-content').style.opacity = '1';
+                }, 10);
+            }
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            loginModal.classList.remove('active');
+            document.querySelector('.modal-content').style.transform = 'translateY(-50px)';
+            document.querySelector('.modal-content').style.opacity = '0';
+        });
+        
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (username && password) {
+                // In a real app, you would send this to a server
+                // For demo purposes, we'll just simulate a successful login
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Update UI
+                updateLoginStatus();
+                
+                // Close modal
+                loginModal.classList.remove('active');
+                
+                // Show success message
+                alert('Login berhasil! Selamat datang kembali.');
+            } else {
+                alert('Silakan isi nama pengguna dan kata sandi.');
+            }
+        });
         
         // Logout
         logoutButton.addEventListener('click', function() {
@@ -1355,43 +1348,36 @@
             document.getElementById('confirmUsername').textContent = document.getElementById('usernameReg').value;
         }
         
-        // Form submission (menggunakan fetch ke Java backend)
+        // Form submission
         registrationForm.addEventListener('submit', function(e) {
             e.preventDefault();
-    
+            
             // Check if terms are agreed
             if (!document.getElementById('agreeTerms').checked) {
                 alert('Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.');
                 return;
             }
-
-            const formData = new FormData(registrationForm);
-
-            fetch('register.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.text())
-            .then(data => {
-                alert(data); // Menampilkan respon dari register.php
-
-            // Tutup modal dan reset form
+            
+            // In a real app, you would send the data to a server here
+            // For demo purposes, we'll just show a success message
+            
+            // Close registration modal
             registrationModal.classList.remove('active');
+            
+            // Show success message
+            alert('Pendaftaran berhasil! Anda sekarang dapat masuk menggunakan akun yang telah dibuat.');
+            
+            // Reset form
             registrationForm.reset();
             currentStep = 0;
             showStep(currentStep);
-
-            // Simpan status login
+            
+            // Mark user as logged in
             isLoggedIn = true;
             localStorage.setItem('isLoggedIn', 'true');
             updateLoginStatus();
-        })
-        .catch(error => {
-            alert('Terjadi kesalahan saat mengirim data. Silakan coba lagi.');
-            console.error(error);
         });
-    });
-
+        
         // FAQ Accordion
         document.querySelectorAll('.bg-white button').forEach(button => {
             button.addEventListener('click', () => {
@@ -1525,6 +1511,81 @@
         let touchEndX = 0;
 
         carousel.addEventListener
-    </script>
+        </script>
+
+        <!-- Modal Dokumen -->
+<div id="documentModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white max-w-2xl w-full p-6 rounded-lg shadow-lg relative overflow-y-auto max-h-[90vh]">
+      <button onclick="closeDocumentModal()" class="absolute top-2 right-3 text-gray-600 hover:text-red-500 text-2xl font-bold">&times;</button>
+      <h2 id="documentTitle" class="text-2xl font-bold text-blue-700 mb-4"></h2>
+      <div id="documentContent" class="text-gray-700 text-sm space-y-2"></div>
+    </div>
+  </div>
+
+  
+  <script>
+    const modal = document.getElementById('documentModal');
+    const titleEl = document.getElementById('documentTitle');
+    const contentEl = document.getElementById('documentContent');
+  
+    const documentData = {
+      terms: {
+        title: 'Syarat dan Ketentuan',
+        content: [
+          'Program ini diperuntukkan bagi masyarakat berpenghasilan rendah.',
+          'Peserta wajib memberikan data yang valid.',
+          'Penyalahgunaan sistem dapat dikenakan sanksi.',
+          'Data peserta akan disimpan dengan aman sesuai kebijakan privasi.',
+          'Ketentuan dapat berubah sewaktu-waktu.'
+        ]
+      },
+      privacy: {
+        title: 'Kebijakan Privasi',
+        content: [
+          'Kami menjaga kerahasiaan data pribadi Anda.',
+          'Data digunakan hanya untuk keperluan antrian dan verifikasi.',
+          'Kami tidak akan membagikan data kepada pihak ketiga tanpa izin.'
+        ]
+      },
+      guide: {
+        title: 'Panduan Pengguna',
+        content: [
+          'Klik "Daftar Sekarang" untuk memulai.',
+          'Isi formulir pendaftaran dengan data yang benar.',
+          'Unggah dokumen pendukung.',
+          'Pantau posisi antrian Anda melalui menu Cek Antrian.'
+        ]
+      },
+      faq: {
+        title: 'FAQ',
+        content: [
+          'T: Bagaimana cara mendaftar?\nJ: Klik tombol "Daftar Sekarang" dan ikuti panduan.',
+          'T: Apakah layanan ini gratis?\nJ: Ya, tanpa biaya pendaftaran.',
+          'T: Apakah data saya aman?\nJ: Kami menggunakan enkripsi dan kebijakan privasi ketat.'
+        ]
+      }
+    };
+  
+    function openDocumentModal(key) {
+      const doc = documentData[key];
+      titleEl.textContent = doc.title;
+      contentEl.innerHTML = doc.content.map(line => `<p>${line}</p>`).join('');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+  
+    function closeDocumentModal() {
+      modal.classList.remove('flex');
+      modal.classList.add('hidden');
+    }
+  
+    // Tutup modal jika klik di luar kontennya
+    window.addEventListener('click', function (e) {
+      if (e.target === modal) {
+        closeDocumentModal();
+      }
+    });
+  </script>
+  
 </body>
 </html>

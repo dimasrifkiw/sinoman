@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Rumah Tangga - SINOMAN</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e6f0f8; /* biru lembut */
+      color: #001f3f; /* navy */
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #f0e68c; /* khaki */
+      display: flex;
+      flex-direction: column;
+      padding-top: 1rem;
+    }
+
+    .sidebar img {
+      width: 160px;
+      margin: 0 auto 1rem;
+    }
+
+    .sidebar-title {
+      color: #001f3f;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .nav-link {
+      color: #0f3553;
+      padding: 1rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 500;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: #0f3553;
+      color: white !important;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .file-list {
+      background-color: #ffffffd6;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .search-box {
+      margin-bottom: 1.5rem;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border: 2px solid #0f3553;
+      border-radius: 10px;
+      z-index: 1000;
+      max-height: 80vh;
+      overflow: auto;
+    }
+
+    .popup h5 {
+      color: #0f3553;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: red;
+    }
+
+    .highlight {
+      background-color: yellow;
+    }
+
+    table {
+      font-size: 0.9rem;
+    }
+
+    .checkbox-col {
+      width: 30px;
+    }
+
+    .top-controls {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img src="sinoman.png" alt="Logo SINOMAN">
+    <h4 class="sidebar-title">ADMIN SINOMAN</h4>
+    <a href="admin.html" class="nav-link"><i class="fas fa-upload"></i> Upload Data</a>
+    <a href="datarumah.html" class="nav-link active"><i class="fas fa-home"></i> Data Rumah Tangga</a>
+    <a href="#" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="#" class="nav-link"><i class="fas fa-users"></i> Manajemen User</a>
+    <a href="#" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
+  </div>
+
+  <!-- Konten Utama -->
+  <div class="main">
+    <h2>Data Rumah Tangga</h2>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" class="form-control" placeholder="Cari kalurahan...">
+      <button class="btn btn-primary mt-2" onclick="searchFiles()">Cari</button>
+    </div>
+
+    <div class="file-list" id="fileList"></div>
+
+    <!-- Popup Data -->
+    <div class="popup" id="popup" style="display: none;">
+      <span class="popup-close" onclick="closePopup()">&times;</span>
+      <h5 id="popupTitle"></h5>
+      <div id="popupContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const fileListContainer = document.getElementById("fileList");
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popupContent");
+    const popupTitle = document.getElementById("popupTitle");
+
+    // Tampilkan daftar file
+    function loadFiles() {
+      const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+      fileListContainer.innerHTML = "";
+
+      if (files.length === 0) {
+        fileListContainer.innerHTML = "<p class='text-muted'>Belum ada data diunggah.</p>";
+        return;
+      }
+
+      // Tombol hapus dipilih (sekarang di atas tabel)
+      const topControls = document.createElement("div");
+      topControls.className = "top-controls";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "btn btn-danger mb-3";
+      deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Hapus File yang Dipilih`;
+      deleteButton.onclick = deleteSelected;
+      topControls.appendChild(deleteButton);
+
+      fileListContainer.appendChild(topControls);
+
+      const table = document.createElement("table");
+      table.className = "table table-bordered";
+      table.innerHTML = `
+        <thead class="table-light">
+          <tr>
+            <th class="checkbox-col"><input type="checkbox" id="checkAll" onchange="toggleAllCheckboxes(this)"></th>
+            <th>Nama File</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${files.map((file, index) => `
+            <tr>
+              <td><input type="checkbox" class="fileCheckbox" data-index="${index}"></td>
+              <td>${file.name}</td>
+              <td>
+                <button class="btn btn-sm btn-info" onclick="showFile(${index})"><i class="fas fa-eye"></i> Lihat</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteFile(${index})"><i class="fas fa-trash-alt"></i> Hapus</button>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      `;
+
+      fileListContainer.appendChild(table);
+    }
+
+    // Menampilkan isi file ke dalam popup
+    function showFile(index) {
+      const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+      const file = files[index];
+
+      popupTitle.textContent = `Isi File: ${file.name}`;
+      const data = file.data;
+
+      let table = "<table class='table table-striped'><tbody>";
+      data.forEach((row, i) => {
+        if (i >= 2) { // Mulai dari baris ke-3
+          table += "<tr>" + row.map(cell => {
+            if (typeof cell === "string" && searchInput.value.trim() !== "") {
+              const regex = new RegExp(searchInput.value, "i");
+              return `<td>${cell.replace(regex, match => `<span class='highlight'>${match}</span>`)}</td>`;
+            } else {
+              return `<td>${cell || ""}</td>`;
+            }
+          }).join("") + "</tr>";
+        }
+      });
+      table += "</tbody></table>";
+      popupContent.innerHTML = table;
+      popup.style.display = "block";
+    }
+
+    function closePopup() {
+      popup.style.display = "none";
+    }
+
+    function deleteFile(index) {
+      if (!confirm("Yakin ingin menghapus file ini?")) return;
+      let files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+      files.splice(index, 1);
+      localStorage.setItem("sinomanFiles", JSON.stringify(files));
+      loadFiles();
+    }
+
+    function deleteSelected() {
+      let files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+      const checkboxes = document.querySelectorAll(".fileCheckbox:checked");
+      if (checkboxes.length === 0) {
+        alert("Pilih minimal satu file untuk dihapus.");
+        return;
+      }
+
+      if (!confirm("Yakin ingin menghapus file-file yang dipilih?")) return;
+
+      const indicesToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index)).sort((a, b) => b - a);
+      for (let i of indicesToDelete) {
+        files.splice(i, 1);
+      }
+
+      localStorage.setItem("sinomanFiles", JSON.stringify(files));
+      loadFiles();
+    }
+
+    function toggleAllCheckboxes(source) {
+      document.querySelectorAll(".fileCheckbox").forEach(cb => cb.checked = source.checked);
+    }
+
+    function searchFiles() {
+      const search = document.getElementById("searchInput").value.trim().toLowerCase();
+      const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+
+      const matchIndex = files.findIndex(file => {
+        const content = file.data.map(row => row.join(" ").toLowerCase()).join(" ");
+        return content.includes(search) || file.name.toLowerCase().includes(search);
+      });
+
+      if (matchIndex !== -1) {
+        showFile(matchIndex);
+      } else {
+        alert("Tidak ditemukan kalurahan yang cocok.");
+      }
+    }
+
+    // Load saat halaman dibuka
+    loadFiles();
+  </script>
+</body>
+</html>

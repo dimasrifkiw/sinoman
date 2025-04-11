@@ -81,9 +81,6 @@
       padding: 0.5rem;
       border: 1px solid #ccc;
     }
-    .search-bar {
-      margin: 1rem 0;
-    }
   </style>
 </head>
 <body>
@@ -120,7 +117,12 @@
     <!-- Data Section -->
     <div id="data-section" class="hidden">
       <h2>Data Rumah Tangga</h2>
-      <input type="text" class="form-control search-bar" id="searchInput" oninput="filterFiles()" placeholder="Cari berdasarkan Kalurahan...">
+      <div class="d-flex mb-3">
+        <input type="text" class="form-control me-2" id="searchInput" placeholder="Cari berdasarkan Kalurahan...">
+        <button class="btn btn-primary" onclick="filterFiles()">
+          <i class="fas fa-search"></i> Cari
+        </button>
+      </div>
       <div class="file-list" id="fileList"></div>
       <div id="tableContainer" class="mt-4"></div>
     </div>
@@ -245,26 +247,43 @@
 
     function filterFiles() {
       const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      
       if (keyword === '') {
         renderFileList();
         return;
       }
 
       const result = uploadedFiles.filter(file => {
-        const headers = file.data[0].map(h => (h || '').toString().toLowerCase());
-        const kalurahanIndex = headers.findIndex(h => h.includes('kalurahan') || h.includes('kelurahan'));
-        if (kalurahanIndex === -1) return false;
+        try {
+          const headers = file.data[0].map(h => (h || '').toString().toLowerCase());
+          const kalurahanIndex = headers.findIndex(h => h.includes('kalurahan') || h.includes('kelurahan'));
+          
+          if (kalurahanIndex === -1) {
+            return file.data.some(row => 
+              row.some(cell => 
+                (cell || '').toString().toLowerCase().includes(keyword)
+              )
+            );
+          }
 
-        for (let i = 1; i < file.data.length; i++) {
-          const row = file.data[i];
-          const cell = (row[kalurahanIndex] || '').toString().toLowerCase();
-          if (cell.includes(keyword)) return true;
+          return file.data.some((row, i) => 
+            i > 0 && (row[kalurahanIndex] || '').toString().toLowerCase().includes(keyword)
+          );
+        } catch (e) {
+          console.error('Error filtering file:', e);
+          return false;
         }
-        return false;
       });
 
       renderFileList(result);
     }
+
+    // Event listener untuk tombol Enter
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        filterFiles();
+      }
+    });
 
     // Drag and Drop support
     const dropZone = document.getElementById('dropZone');

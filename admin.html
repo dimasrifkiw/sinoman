@@ -24,6 +24,13 @@
       width: 160px;
       margin: 0 auto 1rem;
     }
+    .sidebar-title {
+      color: #001f3f;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
     .nav-link {
       color: #0f3553;
       padding: 1rem;
@@ -84,6 +91,7 @@
   <!-- Sidebar Navigasi -->
   <div class="sidebar">
     <img src="sinoman.png" alt="Logo SINOMAN">
+    <h4 class="sidebar-title">ADMIN SINOMAN</h4>
     <a href="#" class="nav-link active" onclick="showSection('upload', this)"><i class="fas fa-upload"></i> Upload Data</a>
     <a href="#" class="nav-link" onclick="showSection('data', this)"><i class="fas fa-home"></i> Data Rumah Tangga</a>
     <a href="#" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
@@ -96,13 +104,16 @@
     <!-- Upload Section -->
     <div id="upload-section">
       <h2>Upload Data Excel</h2>
-      <p>Unggah data rumah tangga dalam format Excel</p>
-      <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+      <p>Unggah data penerima bantuan dalam format Excel</p>
+
+      <div class="alert alert-success d-none" id="uploadAlert"></div>
+
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
         <i class="fas fa-file-excel fa-3x text-primary mb-2"></i>
         <p>Drag & drop file Excel disini atau</p>
         <button class="btn btn-primary"><i class="fas fa-upload"></i> Pilih File</button>
         <p class="mt-2 text-muted">Format yang didukung: .xlsx, .xls</p>
-        <input type="file" id="fileInput" accept=".xlsx,.xls" style="display: none;" onchange="handleFileUpload(event)">
+        <input type="file" id="fileInput" multiple accept=".xlsx,.xls" style="display: none;" onchange="handleFileUpload(event)">
       </div>
     </div>
 
@@ -115,12 +126,12 @@
     </div>
   </div>
 
+  <!-- Script -->
   <script>
-    const uploadedFiles = []; // Menyimpan semua file yang sudah diunggah
-    let visibleIndex = null;  // Untuk melacak file yang sedang ditampilkan
+    const uploadedFiles = [];
+    let visibleIndex = null;
 
     function showSection(section, clickedLink) {
-      // Menampilkan section berdasarkan klik navigasi
       document.getElementById('upload-section').classList.add('hidden');
       document.getElementById('data-section').classList.add('hidden');
       document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
@@ -129,34 +140,54 @@
         document.getElementById('upload-section').classList.remove('hidden');
       } else if (section === 'data') {
         document.getElementById('data-section').classList.remove('hidden');
-        renderFileList(); // Tampilkan daftar file
+        renderFileList();
       }
 
       if (clickedLink) clickedLink.classList.add('active');
     }
 
+    function showUploadSuccess(count) {
+      const alert = document.getElementById('uploadAlert');
+      alert.textContent = `✅ ${count} file ${count > 1 ? 'berhasil diupload' : 'berhasil diupload'}!`;
+      alert.classList.remove('d-none');
+      setTimeout(() => alert.classList.add('d-none'), 3000);
+    }
+
     function handleFileUpload(event) {
-      // Fungsi saat file diunggah
-      const file = event.target.files[0];
-      if (file && (file.name.endsWith('.xlsx') || file.name.endsWith('.xls'))) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          uploadedFiles.push({ name: file.name, data: json });
-          alert('File "' + file.name + '" berhasil diunggah!');
-        };
-        reader.readAsArrayBuffer(file);
-      } else {
-        alert('Hanya file .xlsx atau .xls yang diperbolehkan.');
-      }
+      const files = event.target.files;
+      let successCount = 0;
+
+      const filePromises = Array.from(files).map(file => {
+        return new Promise((resolve) => {
+          if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: 'array' });
+              const sheetName = workbook.SheetNames[0];
+              const worksheet = workbook.Sheets[sheetName];
+              const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+              uploadedFiles.push({ name: file.name, data: json });
+              successCount++;
+              resolve();
+            };
+            reader.readAsArrayBuffer(file);
+          } else {
+            alert('Hanya file .xlsx atau .xls yang diperbolehkan.');
+            resolve();
+          }
+        });
+      });
+
+      Promise.all(filePromises).then(() => {
+        renderFileList();
+        if (successCount > 0) {
+          showUploadSuccess(successCount);
+        }
+      });
     }
 
     function renderFileList(filteredFiles = null) {
-      // Menampilkan daftar file (bisa semua atau hasil filter)
       const listContainer = document.getElementById('fileList');
       const tableContainer = document.getElementById('tableContainer');
       listContainer.innerHTML = '';
@@ -181,11 +212,10 @@
         listContainer.appendChild(item);
       });
 
-      visibleIndex = null; // Reset tampilan jika sebelumnya ada file terlihat
+      visibleIndex = null;
     }
 
     function toggleFile(index) {
-      // Menampilkan / menyembunyikan isi data file
       const tableContainer = document.getElementById('tableContainer');
       if (visibleIndex === index) {
         tableContainer.innerHTML = '';
@@ -207,28 +237,24 @@
     }
 
     function deleteFile(index) {
-      // Menghapus file dari daftar
       if (confirm('Yakin ingin menghapus file ini?')) {
         uploadedFiles.splice(index, 1);
-        filterFiles(); // Refresh dengan filter saat ini
+        filterFiles();
       }
     }
 
     function filterFiles() {
-      // Filter berdasarkan kata kunci pencarian di kolom "kalurahan"/"kelurahan"
       const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
       if (keyword === '') {
-        renderFileList(); // Tampilkan semua jika kosong
+        renderFileList();
         return;
       }
 
       const result = uploadedFiles.filter(file => {
         const headers = file.data[0].map(h => (h || '').toString().toLowerCase());
         const kalurahanIndex = headers.findIndex(h => h.includes('kalurahan') || h.includes('kelurahan'));
+        if (kalurahanIndex === -1) return false;
 
-        if (kalurahanIndex === -1) return false; // Kolom tidak ditemukan
-
-        // Cek baris apakah ada yang mengandung keyword
         for (let i = 1; i < file.data.length; i++) {
           const row = file.data[i];
           const cell = (row[kalurahanIndex] || '').toString().toLowerCase();
@@ -239,6 +265,24 @@
 
       renderFileList(result);
     }
+
+    // Drag and Drop support
+    const dropZone = document.getElementById('dropZone');
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      document.getElementById('fileInput').files = files;
+      handleFileUpload({ target: { files } });
+    });
   </script>
 
 </body>

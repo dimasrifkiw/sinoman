@@ -761,10 +761,22 @@
     </section>
 
     <!-- Queue Check Section -->
-    <section id="queue" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto bg-gradient-to-r from-sky-700 to-blue-800 rounded-xl p-8 text-white shadow-lg">
-                <h2 class="text-2xl font-bold mb-6">Cek Posisi Antrian Anda</h2>
+<section id="queue" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto bg-gradient-to-r from-sky-700 to-blue-800 rounded-xl p-8 text-white shadow-lg">
+            <h2 class="text-2xl font-bold mb-6">Cek Posisi Antrian Anda</h2>
+            
+            <!-- Bagian ini akan ditampilkan jika belum login -->
+            <div id="queueLoginPrompt" class="text-center py-8">
+                <i class="fas fa-lock text-4xl mb-4"></i>
+                <p class="mb-6">Anda harus login atau mendaftar terlebih dahulu untuk memeriksa posisi antrian.</p>
+                <button onclick="showLoginModal()" class="bg-yellow-400 text-gray-800 px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login Sekarang
+                </button>
+            </div>
+            
+            <!-- Bagian ini akan ditampilkan setelah login -->
+            <div id="queueCheckForm" class="hidden">
                 <p class="mb-8">Masukkan nomor pendaftaran atau NIK Anda untuk memeriksa posisi antrian saat ini.</p>
                 
                 <div class="flex flex-col md:flex-row gap-4">
@@ -774,40 +786,41 @@
                     </button>
                 </div>
                 
-                <div id="queueResult" class="queue-result">
+                <div id="queueResult" class="queue-result mt-6 hidden">
                     <h3 class="text-lg font-semibold mb-2">Status Antrian Anda</h3>
                     <p id="queueNumberDisplay" class="text-sm opacity-80"></p>
-                    <div class="queue-position" id="queuePosition"></div>
+                    <div class="queue-position text-2xl font-bold my-4" id="queuePosition"></div>
                     <p class="text-center">Total antrian saat ini: <span id="totalQueue">1,245</span> orang</p>
                     <div class="mt-4 bg-white bg-opacity-20 p-3 rounded-lg">
                         <p class="text-sm">Estimasi waktu tunggu: <span id="waitTime">3-6 bulan</span></p>
                     </div>
                 </div>
-                
-                <div class="mt-8 bg-white bg-opacity-20 p-4 rounded-lg">
-                    <h3 class="font-bold mb-2">Status Antrian Terkini</h3>
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="text-sm">Total Pendaftar</p>
-                            <p class="text-xl font-bold">3,245</p>
-                        </div>
-                        <div>
-                            <p class="text-sm">Dalam Proses</p>
-                            <p class="text-xl font-bold">1,128</p>
-                        </div>
-                        <div>
-                            <p class="text-sm">Terverifikasi</p>
-                            <p class="text-xl font-bold">876</p>
-                        </div>
-                        <div>
-                            <p class="text-sm">Diterima</p>
-                            <p class="text-xl font-bold">542</p>
-                        </div>
+            </div>
+            
+            <div class="mt-8 bg-white bg-opacity-20 p-4 rounded-lg">
+                <h3 class="font-bold mb-2">Status Antrian Terkini</h3>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm">Total Pendaftar</p>
+                        <p class="text-xl font-bold">3,245</p>
+                    </div>
+                    <div>
+                        <p class="text-sm">Dalam Proses</p>
+                        <p class="text-xl font-bold">1,128</p>
+                    </div>
+                    <div>
+                        <p class="text-sm">Terverifikasi</p>
+                        <p class="text-xl font-bold">876</p>
+                    </div>
+                    <div>
+                        <p class="text-sm">Diterima</p>
+                        <p class="text-xl font-bold">542</p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
        <!-- Image Carousel Section -->
        <section class="py-16 bg-gray-50">
@@ -1076,85 +1089,127 @@
         const loginForm = document.getElementById('loginForm');
         const userDropdown = document.getElementById('userDropdown');
         const logoutButton = document.getElementById('logoutButton');
-        
+        const queueLoginPrompt = document.getElementById('queueLoginPrompt');
+        const queueCheckForm = document.getElementById('queueCheckForm');
+        const userDropdownToggle = document.querySelector('.relative'); // The container of the dropdown
+    
         // Check if user is logged in from localStorage
         let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        
+        let currentUser = localStorage.getItem('username') || '';
+    
         // Update UI based on login status
         function updateLoginStatus() {
             if (isLoggedIn) {
-                loginButton.innerHTML = '<i class="fas fa-user-circle mr-2"></i>Akun Saya';
+                loginButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i>${currentUser || 'Akun Saya'}`;
                 loginButton.classList.remove('bg-white', 'text-blue-600');
                 loginButton.classList.add('bg-blue-700', 'text-white');
+                
+                // Show queue check form
+                queueLoginPrompt.classList.add('hidden');
+                queueCheckForm.classList.remove('hidden');
             } else {
                 loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Masuk';
                 loginButton.classList.remove('bg-blue-700', 'text-white');
                 loginButton.classList.add('bg-white', 'text-blue-600');
+                
+                // Hide queue check form
+                queueLoginPrompt.classList.remove('hidden');
+                queueCheckForm.classList.add('hidden');
             }
         }
-        
-        // Initialize
-        updateLoginStatus();
-        
-        // Toggle login modal
-        loginButton.addEventListener('click', function(e) {
+    
+        // Toggle dropdown visibility
+        function toggleDropdown() {
             if (isLoggedIn) {
-                // Toggle dropdown if logged in
                 userDropdown.classList.toggle('active');
-            } else {
-                // Show login modal if not logged in
-                loginModal.classList.add('active');
-                setTimeout(() => {
-                    document.querySelector('.modal-content').style.transform = 'translateY(0)';
-                    document.querySelector('.modal-content').style.opacity = '1';
-                }, 10);
             }
-        });
-        
-        // Close modal
-        closeModal.addEventListener('click', function() {
+        }
+    
+        // Show login modal
+        function showLoginModal() {
+            loginModal.classList.add('active');
+            setTimeout(() => {
+                document.querySelector('.modal-content').style.transform = 'translateY(0)';
+                document.querySelector('.modal-content').style.opacity = '1';
+            }, 10);
+        }
+    
+        // Close login modal
+        function closeLoginModal() {
             loginModal.classList.remove('active');
             document.querySelector('.modal-content').style.transform = 'translateY(-50px)';
             document.querySelector('.modal-content').style.opacity = '0';
-        });
-        
-        // Login form submission
-loginForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    
-        // Simple validation
-    if (username && password) {
-        // Check for admin credentials
-        if (username === 'admin1' && password === 'adminsinoman') {
-            // Redirect to admin page
-            window.location.href = 'admin.html';
-            return;
         }
-        
-        // For other users (existing logic)
-        isLoggedIn = true;
-        localStorage.setItem('isLoggedIn', 'true');
-        
-        // Update UI
+    
+        // Initialize
         updateLoginStatus();
-        
-        // Close modal
-        loginModal.classList.remove('active');
-        
-        // Show success message
-        alert('Login berhasil! Selamat datang kembali.');
-    } else {
-        alert('Silakan isi nama pengguna dan kata sandi.');
-    }
-});
-        
+    
+        // Event listeners
+        loginButton.addEventListener('click', function(e) {
+            if (isLoggedIn) {
+                // Toggle dropdown if logged in
+                toggleDropdown();
+            } else {
+                // Show login modal if not logged in
+                showLoginModal();
+            }
+            e.stopPropagation(); // Prevent event from bubbling to document
+        });
+    
+        // Close modal when clicking the close button
+        closeModal.addEventListener('click', closeLoginModal);
+    
+        // Close modal when clicking outside
+        loginModal.addEventListener('click', function(e) {
+            if (e.target === loginModal) {
+                closeLoginModal();
+            }
+        });
+    
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (username && password) {
+                // Check for admin credentials
+                if (username === 'admin1' && password === 'adminsinoman') {
+                    // Redirect to admin page
+                    window.location.href = 'admin.html';
+                    return;
+                }
+                
+                // For other users
+                isLoggedIn = true;
+                currentUser = username;
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+                
+                // Update UI
+                updateLoginStatus();
+                
+                // Close modal
+                closeLoginModal();
+                
+                // Show success message
+                alert('Login berhasil! Selamat datang kembali.');
+                
+                // Clear form
+                loginForm.reset();
+            } else {
+                alert('Silakan isi nama pengguna dan kata sandi.');
+            }
+        });
+    
         // Logout
         logoutButton.addEventListener('click', function() {
             isLoggedIn = false;
+            currentUser = '';
             localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('username');
             updateLoginStatus();
             userDropdown.classList.remove('active');
             alert('Anda telah keluar dari sistem.');
@@ -1166,7 +1221,7 @@ loginForm.addEventListener('submit', function(e) {
                 userDropdown.classList.remove('active');
             }
         });
-
+    
         // Queue Check System
         const checkQueueButton = document.getElementById('checkQueue');
         const queueNumberInput = document.getElementById('queueNumber');
@@ -1175,14 +1230,14 @@ loginForm.addEventListener('submit', function(e) {
         const queuePosition = document.getElementById('queuePosition');
         const totalQueue = document.getElementById('totalQueue');
         const waitTime = document.getElementById('waitTime');
-
+    
         // Dummy queue positions
         const dummyQueues = {
             '111': 10,
             '222': 31,
             '333': 5
         };
-
+    
         checkQueueButton.addEventListener('click', function() {
             const queueNumber = queueNumberInput.value.trim();
             

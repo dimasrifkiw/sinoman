@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -10,13 +10,13 @@
       display: flex;
       min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #e6f0f8; /* biru lembut */
-      color: #001f3f; /* navy */
+      background-color: #e6f0f8;
+      color: #001f3f;
     }
 
     .sidebar {
       width: 250px;
-      background-color: #f0e68c; /* khaki */
+      background-color: #f0e68c;
       display: flex;
       flex-direction: column;
       padding-top: 1rem;
@@ -62,10 +62,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    .search-box {
-      margin-bottom: 1.5rem;
-    }
-
     .popup {
       position: fixed;
       top: 50%;
@@ -80,10 +76,6 @@
       overflow: auto;
     }
 
-    .popup h5 {
-      color: #0f3553;
-    }
-
     .popup-close {
       position: absolute;
       top: 8px;
@@ -94,11 +86,10 @@
     }
 
     .highlight {
-      background-color: yellow;
-    }
-
-    table {
-      font-size: 0.9rem;
+      background-color: #007bff;
+      color: white;
+      padding: 0 3px;
+      border-radius: 2px;
     }
 
     .checkbox-col {
@@ -125,18 +116,17 @@
     <a href="#" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
   </div>
 
-  <!-- Konten Utama -->
+  <!-- Main Content -->
   <div class="main">
     <h2>Data User</h2>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" class="form-control" placeholder="Cari kalurahan...">
-      <button class="btn btn-primary mt-2" onclick="searchFiles()">Cari</button>
+    <div class="d-flex mb-3">
+      <input type="text" class="form-control me-2" id="searchInput" placeholder="Cari berdasarkan Kalurahan...">
+      <button class="btn btn-primary" onclick="searchFiles()"><i class="fas fa-search"></i> Cari</button>
     </div>
 
     <div class="file-list" id="fileList"></div>
 
-    <!-- Popup Data -->
     <div class="popup" id="popup" style="display: none;">
       <span class="popup-close" onclick="closePopup()">&times;</span>
       <h5 id="popupTitle"></h5>
@@ -150,9 +140,9 @@
     const popupContent = document.getElementById("popupContent");
     const popupTitle = document.getElementById("popupTitle");
 
-    // Tampilkan daftar file
-    function loadFiles() {
-      const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+    let allFiles = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
+
+    function loadFiles(files = allFiles, keyword = "") {
       fileListContainer.innerHTML = "";
 
       if (files.length === 0) {
@@ -160,7 +150,6 @@
         return;
       }
 
-      // Tombol hapus dipilih (sekarang di atas tabel)
       const topControls = document.createElement("div");
       topControls.className = "top-controls";
 
@@ -169,7 +158,6 @@
       deleteButton.innerHTML = `<i class="fas fa-trash-alt"></i> Hapus File yang Dipilih`;
       deleteButton.onclick = deleteSelected;
       topControls.appendChild(deleteButton);
-
       fileListContainer.appendChild(topControls);
 
       const table = document.createElement("table");
@@ -183,45 +171,53 @@
           </tr>
         </thead>
         <tbody>
-          ${files.map((file, index) => `
-            <tr>
-              <td><input type="checkbox" class="fileCheckbox" data-index="${index}"></td>
-              <td>${file.name}</td>
-              <td>
-                <button class="btn btn-sm btn-info" onclick="showFile(${index})"><i class="fas fa-eye"></i> Lihat</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteFile(${index})"><i class="fas fa-trash-alt"></i> Hapus</button>
-              </td>
-            </tr>
-          `).join("")}
+          ${files.map((file, index) => {
+            const highlightedName = keyword
+              ? file.name.replace(new RegExp(`(${escapeRegExp(keyword)})`, "gi"), '<span class="highlight">$1</span>')
+              : file.name;
+
+            return `
+              <tr>
+                <td><input type="checkbox" class="fileCheckbox" data-index="${file.index ?? index}"></td>
+                <td>${highlightedName}</td>
+                <td>
+                  <button class="btn btn-sm btn-info" onclick="showFile(${file.index ?? index}, '${keyword}')"><i class="fas fa-eye"></i> Lihat</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteFile(${file.index ?? index})"><i class="fas fa-trash-alt"></i> Hapus</button>
+                </td>
+              </tr>`;
+          }).join("")}
         </tbody>
       `;
 
       fileListContainer.appendChild(table);
     }
 
-    // Menampilkan isi file ke dalam popup
-    function showFile(index) {
-      const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
-      const file = files[index];
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
 
-      popupTitle.textContent = `Isi File: ${file.name}`;
+    function showFile(index, keyword = "") {
+      const file = allFiles[index];
       const data = file.data;
+      popupTitle.textContent = `Isi File: ${file.name}`;
 
-      let table = "<table class='table table-striped'><tbody>";
+      let html = "<table class='table table-striped'><tbody>";
       data.forEach((row, i) => {
-        if (i >= 2) { // Mulai dari baris ke-3
-          table += "<tr>" + row.map(cell => {
-            if (typeof cell === "string" && searchInput.value.trim() !== "") {
-              const regex = new RegExp(searchInput.value, "i");
-              return `<td>${cell.replace(regex, match => `<span class='highlight'>${match}</span>`)}</td>`;
-            } else {
-              return `<td>${cell || ""}</td>`;
-            }
-          }).join("") + "</tr>";
+        if (i >= 2) {
+          html += "<tr>";
+          row.forEach(cell => {
+            const val = (cell || "").toString();
+            const highlighted = keyword
+              ? val.replace(new RegExp(`(${escapeRegExp(keyword)})`, "gi"), '<span class="highlight">$1</span>')
+              : val;
+            html += `<td>${highlighted}</td>`;
+          });
+          html += "</tr>";
         }
       });
-      table += "</tbody></table>";
-      popupContent.innerHTML = table;
+      html += "</tbody></table>";
+
+      popupContent.innerHTML = html;
       popup.style.display = "block";
     }
 
@@ -231,28 +227,22 @@
 
     function deleteFile(index) {
       if (!confirm("Yakin ingin menghapus file ini?")) return;
-      let files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
-      files.splice(index, 1);
-      localStorage.setItem("sinomanFiles", JSON.stringify(files));
+      allFiles.splice(index, 1);
+      localStorage.setItem("sinomanFiles", JSON.stringify(allFiles));
       loadFiles();
     }
 
     function deleteSelected() {
-      let files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
       const checkboxes = document.querySelectorAll(".fileCheckbox:checked");
       if (checkboxes.length === 0) {
-        alert("Pilih minimal satu file untuk dihapus.");
+        alert("Pilih minimal satu file.");
         return;
       }
+      if (!confirm("Yakin ingin menghapus file yang dipilih?")) return;
 
-      if (!confirm("Yakin ingin menghapus file-file yang dipilih?")) return;
-
-      const indicesToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index)).sort((a, b) => b - a);
-      for (let i of indicesToDelete) {
-        files.splice(i, 1);
-      }
-
-      localStorage.setItem("sinomanFiles", JSON.stringify(files));
+      const indices = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index)).sort((a, b) => b - a);
+      indices.forEach(i => allFiles.splice(i, 1));
+      localStorage.setItem("sinomanFiles", JSON.stringify(allFiles));
       loadFiles();
     }
 
@@ -261,19 +251,44 @@
     }
 
     function searchFiles() {
-      const search = document.getElementById("searchInput").value.trim().toLowerCase();
-      const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
-
-      const matchIndex = files.findIndex(file => {
-        const content = file.data.map(row => row.join(" ").toLowerCase()).join(" ");
-        return content.includes(search) || file.name.toLowerCase().includes(search);
-      });
-
-      if (matchIndex !== -1) {
-        showFile(matchIndex);
-      } else {
-        alert("Tidak ditemukan kalurahan yang cocok.");
+      const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (keyword === "") {
+        loadFiles();
+        return;
       }
+
+      const result = allFiles
+        .map((file, index) => {
+          // Find the column that contains "kalurahan" or "kelurahan" (case insensitive)
+          const headerRow = file.data.find(row => 
+            row.some(cell => 
+              cell && cell.toString().toLowerCase().includes("kalurahan") || 
+              cell && cell.toString().toLowerCase().includes("kelurahan")
+            )
+          );
+
+          if (!headerRow) return null;
+
+          const kalurahanIndex = headerRow.findIndex(cell => 
+            cell && (
+              cell.toString().toLowerCase().includes("kalurahan") || 
+              cell.toString().toLowerCase().includes("kelurahan")
+            )
+          );
+
+          if (kalurahanIndex === -1) return null;
+
+          // Check if any row in the data contains the keyword in the kalurahan column
+          const hasMatch = file.data.some(row => 
+            row[kalurahanIndex] && 
+            row[kalurahanIndex].toString().toLowerCase().includes(keyword)
+          );
+
+          return hasMatch ? { ...file, index } : null;
+        })
+        .filter(Boolean);
+
+      loadFiles(result, keyword);
     }
 
     // Load saat halaman dibuka

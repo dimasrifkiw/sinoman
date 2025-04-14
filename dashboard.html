@@ -10,13 +10,13 @@
       display: flex;
       min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #e6f0f8; /* biru lembut */
-      color: #001f3f; /* navy */
+      background-color: #e6f0f8;
+      color: #001f3f;
     }
 
     .sidebar {
       width: 250px;
-      background-color: #f0e68c; /* khaki */
+      background-color: #f0e68c;
       display: flex;
       flex-direction: column;
       padding-top: 1rem;
@@ -81,6 +81,11 @@
     <a href="dashboard.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="#" class="nav-link"><i class="fas fa-users"></i> Manajemen User</a>
     <a href="#" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
+
+    <!-- Tombol Keluar -->
+    <div style="margin-top: auto; padding: 1rem;">
+      <a href="#" class="nav-link text-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+    </div>
   </div>
 
   <!-- Konten Utama -->
@@ -115,14 +120,20 @@
   </div>
 
   <script>
-    // Menampilkan jumlah file dari localStorage
+    // Fungsi menampilkan jumlah file dari localStorage
     function tampilkanJumlahFile() {
       const files = JSON.parse(localStorage.getItem("sinomanFiles") || "[]");
       document.getElementById("jumlahFile").textContent = files.length;
     }
 
+    // Fungsi logout tanpa menghapus data
+    function logout() {
+      if (confirm("Apakah Anda yakin ingin keluar?")) {
+        window.location.href = "index.html";
+      }
+    }
+
     tampilkanJumlahFile();
   </script>
-
 </body>
 </html>

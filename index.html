@@ -1630,7 +1630,12 @@
     function openDocumentModal(key) {
       const doc = documentData[key];
       titleEl.textContent = doc.title;
-      contentEl.innerHTML = doc.content.map(line => `<p>${line}</p>`).join('');
+      contentEl.innerHTML = `
+  <ul class="list-disc list-inside space-y-2">
+    ${doc.content.map(line => `<li>${line}</li>`).join('')}
+  </ul>
+`;
+
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }

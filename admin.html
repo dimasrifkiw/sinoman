@@ -11,13 +11,13 @@
       display: flex;
       min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #e6f0f8; /* Biru lembut untuk background */
-      color: #001f3f; /* Warna teks navy */
+      background-color: #e6f0f8;
+      color: #001f3f;
     }
 
     .sidebar {
       width: 250px;
-      background-color: #f0e68c; /* Khaki */
+      background-color: #f0e68c;
       display: flex;
       flex-direction: column;
       padding-top: 1rem;
@@ -100,6 +100,11 @@
     <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="#" class="nav-link"><i class="fas fa-users"></i> Manajemen User</a>
     <a href="#" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
+
+    <!-- Tambahan tombol keluar-->
+    <div style="margin-top: auto; padding: 1rem;">
+      <a href="#" class="nav-link text-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+    </div>
   </div>
 
   <!-- Konten Utama -->
@@ -184,6 +189,15 @@
         fileInput.click();
       }
     });
+
+    // Fungsi logout
+  function logout() {
+    if (confirm("Apakah Anda yakin ingin keluar?")) {
+      // Jangan menghapus data dari localStorage agar tetap ada
+      // localStorage.removeItem('sinomanFiles'); // Baris ini dihapus
+      window.location.href = "index.html"; // Arahkan ke halaman login
+    }
+  }
   </script>
 </body>
 </html>

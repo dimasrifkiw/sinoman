@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -114,6 +114,11 @@
     <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
     <a href="#" class="nav-link"><i class="fas fa-users"></i> Manajemen User</a>
     <a href="#" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
+
+    <!-- Tombol keluar  -->
+    <div style="margin-top: auto; padding: 1rem;">
+      <a href="#" class="nav-link text-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+    </div>
   </div>
 
   <!-- Main Content -->
@@ -259,28 +264,26 @@
 
       const result = allFiles
         .map((file, index) => {
-          // Find the column that contains "kalurahan" or "kelurahan" (case insensitive)
-          const headerRow = file.data.find(row => 
-            row.some(cell => 
-              cell && cell.toString().toLowerCase().includes("kalurahan") || 
+          const headerRow = file.data.find(row =>
+            row.some(cell =>
+              cell && cell.toString().toLowerCase().includes("kalurahan") ||
               cell && cell.toString().toLowerCase().includes("kelurahan")
             )
           );
 
           if (!headerRow) return null;
 
-          const kalurahanIndex = headerRow.findIndex(cell => 
+          const kalurahanIndex = headerRow.findIndex(cell =>
             cell && (
-              cell.toString().toLowerCase().includes("kalurahan") || 
+              cell.toString().toLowerCase().includes("kalurahan") ||
               cell.toString().toLowerCase().includes("kelurahan")
             )
           );
 
           if (kalurahanIndex === -1) return null;
 
-          // Check if any row in the data contains the keyword in the kalurahan column
-          const hasMatch = file.data.some(row => 
-            row[kalurahanIndex] && 
+          const hasMatch = file.data.some(row =>
+            row[kalurahanIndex] &&
             row[kalurahanIndex].toString().toLowerCase().includes(keyword)
           );
 
@@ -291,6 +294,15 @@
       loadFiles(result, keyword);
     }
 
+    // Fungsi logout
+  function logout() {
+    if (confirm("Apakah Anda yakin ingin keluar?")) {
+      // Jangan menghapus data dari localStorage agar tetap ada
+      // localStorage.removeItem('sinomanFiles'); // Baris ini dihapus
+      window.location.href = "index.html"; // Arahkan ke halaman login
+    }
+  }
+  
     // Load saat halaman dibuka
     loadFiles();
   </script>

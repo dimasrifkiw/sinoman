@@ -654,11 +654,14 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-6">Sistem Informasi Antrean Omah Transparan</h1>
             <p class="text-xl mb-8">Solusi terintegrasi dan transparan untuk sistem antrian perumahan bagi masyarakat berpenghasilan rendah (MBR).</p>
             <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <!-- Tombol Daftar Sekarang (akan disembunyikan saat login) -->
                 <button id="registerNowButton" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition flex items-center justify-center">
-                  <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
+                    <i class="fas fa-user-plus mr-2"></i> Daftar Sekarang
                 </button>
+                
+                <!-- Info Antrian (selalu tampil) -->
                 <div class="bg-yellow-400 text-gray-800 px-6 py-3 rounded-lg shadow-lg font-bold flex items-center queue-animation">
-                  <i class="fas fa-users mr-2"></i> 1.245 Antrian
+                    <i class="fas fa-users mr-2"></i> <span id="heroQueueNumber">1.245</span> Antrian
                 </div>
             </div>
         </div>
@@ -1098,25 +1101,43 @@
         let currentUser = localStorage.getItem('username') || '';
     
         // Update UI based on login status
-        function updateLoginStatus() {
-            if (isLoggedIn) {
-                loginButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i>${currentUser || 'Akun Saya'}`;
-                loginButton.classList.remove('bg-white', 'text-blue-600');
-                loginButton.classList.add('bg-blue-700', 'text-white');
-                
-                // Show queue check form
-                queueLoginPrompt.classList.add('hidden');
-                queueCheckForm.classList.remove('hidden');
-            } else {
-                loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Masuk';
-                loginButton.classList.remove('bg-blue-700', 'text-white');
-                loginButton.classList.add('bg-white', 'text-blue-600');
-                
-                // Hide queue check form
-                queueLoginPrompt.classList.remove('hidden');
-                queueCheckForm.classList.add('hidden');
-            }
+function updateLoginStatus() {
+    const registerNowButton = document.getElementById('registerNowButton');
+    
+    if (isLoggedIn) {
+        loginButton.innerHTML = `<i class="fas fa-user-circle mr-2"></i>${currentUser || 'Akun Saya'}`;
+        loginButton.classList.remove('bg-white', 'text-blue-600');
+        loginButton.classList.add('bg-blue-700', 'text-white');
+        
+        // Hide register button when logged in
+        if (registerNowButton) {
+            registerNowButton.classList.add('hidden');
         }
+        
+        // Update queue number from queue section if available
+        const totalQueue = document.getElementById('totalQueue');
+        if (totalQueue) {
+            document.getElementById('heroQueueNumber').textContent = totalQueue.textContent;
+        }
+        
+        // Show queue check form
+        queueLoginPrompt.classList.add('hidden');
+        queueCheckForm.classList.remove('hidden');
+    } else {
+        loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Masuk';
+        loginButton.classList.remove('bg-blue-700', 'text-white');
+        loginButton.classList.add('bg-white', 'text-blue-600');
+        
+        // Show register button when logged out
+        if (registerNowButton) {
+            registerNowButton.classList.remove('hidden');
+        }
+        
+        // Hide queue check form
+        queueLoginPrompt.classList.remove('hidden');
+        queueCheckForm.classList.add('hidden');
+    }
+}
     
         // Toggle dropdown visibility
         function toggleDropdown() {
@@ -1167,53 +1188,35 @@
         });
     
         // Login form submission
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Simple validation
-            if (username && password) {
-                // Check for admin credentials
-                if (username === 'admin1' && password === 'adminsinoman') {
-                    // Redirect to admin page
-                    window.location.href = 'admin.html';
-                    return;
-                }
-                
-                // For other users
-                isLoggedIn = true;
-                currentUser = username;
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('username', username);
-                
-                // Update UI
-                updateLoginStatus();
-                
-                // Close modal
-                closeLoginModal();
-                
-                // Show success message
-                alert('Login berhasil! Selamat datang kembali.');
-                
-                // Clear form
-                loginForm.reset();
-            } else {
-                alert('Silakan isi nama pengguna dan kata sandi.');
-            }
-        });
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
     
-        // Logout
-        logoutButton.addEventListener('click', function() {
-            isLoggedIn = false;
-            currentUser = '';
-            localStorage.setItem('isLoggedIn', 'false');
-            localStorage.removeItem('username');
-            updateLoginStatus();
-            userDropdown.classList.remove('active');
-            alert('Anda telah keluar dari sistem.');
-        });
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username && password) {
+        isLoggedIn = true;
+        currentUser = username;
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', username);
+        
+        updateLoginStatus();
+        closeLoginModal();
+        alert('Login berhasil! Selamat datang kembali.');
+        loginForm.reset();
+    }
+});
+
+// Logout
+logoutButton.addEventListener('click', function() {
+    isLoggedIn = false;
+    currentUser = '';
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('username');
+    updateLoginStatus();
+    userDropdown.classList.remove('active');
+    alert('Anda telah keluar dari sistem.');
+});
         
         // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
@@ -1283,7 +1286,7 @@
             }, 10);
         });
         
-        // Also from login modal
+        // Also from login modal and register now button
         showRegistration.addEventListener('click', function(e) {
             e.preventDefault();
             loginModal.classList.remove('active');
@@ -1292,6 +1295,20 @@
                 document.querySelector('.registration-content').style.transform = 'translateY(0)';
                 document.querySelector('.registration-content').style.opacity = '1';
             }, 10);
+        });
+
+        // Register Now button click handler
+        registerNowButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            registrationModal.classList.add('active');
+            setTimeout(() => {
+                document.querySelector('.registration-content').style.transform = 'translateY(0)';
+                document.querySelector('.registration-content').style.opacity = '1';
+            }, 10);
+            
+            // Reset form to first step
+            currentStep = 0;
+            showStep(currentStep);
         });
         
         // Close registration modal

@@ -434,6 +434,94 @@
                 font-size: 0.9rem;
             }
         }
+
+            /* Additional styles for forgot password */
+                .forgot-password-step {
+                display: none;
+        }
+        
+        .forgot-password-step.active {
+            display: block;
+        }
+        
+        .otp-input-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .otp-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .otp-delivery-option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .otp-delivery-option:hover {
+            border-color: #3b82f6;
+            background-color: #f8fafc;
+        }
+        
+        .otp-delivery-option.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .otp-delivery-option input {
+            margin-right: 0.75rem;
+        }
+        
+        .countdown-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        
+        .resend-otp {
+            color: #3b82f6;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .resend-otp:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-login {
+            color: #3b82f6;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .back-to-login:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
@@ -478,13 +566,14 @@
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Masuk ke SINOMAN</h2>
+                <h2 class="text-2xl font-bold text-gray-800" id="loginModalTitle">Masuk ke SINOMAN</h2>
                 <button id="closeModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <form id="loginForm">
+            <!-- Login Form -->
+            <form id="loginForm" class="login-step active">
                 <div class="input-group">
                     <input type="text" id="username" placeholder=" " required>
                     <label for="username">Nama Pengguna atau Email</label>
@@ -500,7 +589,7 @@
                         <input type="checkbox" id="remember" class="mr-2">
                         <label for="remember" class="text-sm text-gray-600">Ingat saya</label>
                     </div>
-                    <a href="#" class="text-sm text-blue-600 hover:underline">Lupa kata sandi?</a>
+                    <a href="#" id="showForgotPassword" class="text-sm text-blue-600 hover:underline">Lupa kata sandi?</a>
                 </div>
                 
                 <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition mb-4">
@@ -509,6 +598,112 @@
                 
                 <div class="text-center text-sm text-gray-600 mb-4">
                     Belum punya akun? <a href="#" id="showRegistration" class="text-blue-600 hover:underline">Daftar sekarang</a>
+                </div>
+            </form>
+            
+            <!-- Forgot Password Form - Step 1: Enter username/email -->
+            <form id="forgotPasswordForm" class="forgot-password-step">
+                <div class="input-group mb-4">
+                    <input type="text" id="forgotUsername" placeholder=" " required>
+                    <label for="forgotUsername">Nama Pengguna atau Email</label>
+                </div>
+                
+                <p class="text-sm text-gray-600 mb-4">Kami akan mengirimkan kode OTP untuk memverifikasi identitas Anda.</p>
+                
+                <button type="button" id="sendOtpButton" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition mb-4">
+                    Kirim Kode OTP
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman masuk</a>
+                </div>
+            </form>
+            
+            <!-- Forgot Password Form - Step 2: Select OTP delivery method -->
+            <form id="otpMethodForm" class="forgot-password-step">
+                <p class="text-sm text-gray-600 mb-4">Pilih metode untuk menerima kode OTP:</p>
+                
+                <div class="otp-delivery-option">
+                    <input type="radio" id="otpMethodPhone" name="otpMethod" value="phone" checked>
+                    <label for="otpMethodPhone">
+                        <div class="font-medium">Kirim ke Nomor HP</div>
+                        <div class="text-sm text-gray-600" id="phoneMasked">+62 ••• ••• ••••</div>
+                    </label>
+                </div>
+                
+                <div class="otp-delivery-option">
+                    <input type="radio" id="otpMethodEmail" name="otpMethod" value="email">
+                    <label for="otpMethodEmail">
+                        <div class="font-medium">Kirim ke Email</div>
+                        <div class="text-sm text-gray-600" id="emailMasked">••••••@•••••.com</div>
+                    </label>
+                </div>
+                
+                <button type="button" id="confirmOtpMethod" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition mt-4 mb-2">
+                    Lanjutkan
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman masuk</a>
+                </div>
+            </form>
+            
+            <!-- Forgot Password Form - Step 3: Enter OTP -->
+            <form id="otpVerificationForm" class="forgot-password-step">
+                <p class="text-sm text-gray-600 mb-4">Masukkan 6-digit kode OTP yang telah dikirim ke:</p>
+                <p class="font-medium text-center mb-6" id="otpDeliveryTarget">+62 ••• ••• 1234</p>
+                
+                <div class="otp-input-container">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                    <input type="text" class="otp-input" maxlength="1" pattern="[0-9]">
+                </div>
+                
+                <div class="countdown-text" id="otpCountdown">Kode OTP berlaku selama 02:00</div>
+                <div class="resend-otp" id="resendOtp">Tidak menerima kode? Kirim ulang</div>
+                
+                <button type="button" id="verifyOtpButton" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition mt-4 mb-2">
+                    Verifikasi
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman masuk</a>
+                </div>
+            </form>
+            
+            <!-- Forgot Password Form - Step 4: Reset Password -->
+            <form id="resetPasswordForm" class="forgot-password-step">
+                <h3 class="text-lg font-semibold mb-4">Atur Ulang Kata Sandi</h3>
+                
+                <div class="input-group mb-4">
+                    <input type="password" id="newPassword" placeholder=" " required>
+                    <label for="newPassword">Kata Sandi Baru</label>
+                </div>
+                
+                <div class="input-group mb-4">
+                    <input type="password" id="confirmNewPassword" placeholder=" " required>
+                    <label for="confirmNewPassword">Konfirmasi Kata Sandi Baru</label>
+                </div>
+                
+                <div class="password-requirements text-sm text-gray-600 mb-4">
+                    <p>Kata sandi harus memenuhi:</p>
+                    <ul class="list-disc pl-5 mt-1">
+                        <li>Minimal 8 karakter</li>
+                        <li>Setidaknya 1 huruf besar</li>
+                        <li>Setidaknya 1 angka</li>
+                        <li>Setidaknya 1 karakter khusus</li>
+                    </ul>
+                </div>
+                
+                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700 transition mb-4">
+                    Atur Ulang Kata Sandi
+                </button>
+                
+                <div class="text-center">
+                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman masuk</a>
                 </div>
             </form>
         </div>
@@ -1206,6 +1401,156 @@ loginForm.addEventListener('submit', function(e) {
         loginForm.reset();
     }
 });
+
+// Forgot Password Flow JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.querySelector('#loginForm');
+            const forgotPasswordForm = document.querySelector('#forgotPasswordForm');
+            const otpMethodForm = document.querySelector('#otpMethodForm');
+            const otpVerificationForm = document.querySelector('#otpVerificationForm');
+            const resetPasswordForm = document.querySelector('#resetPasswordForm');
+            const loginModalTitle = document.querySelector('#loginModalTitle');
+            
+            const showForgotPassword = document.querySelector('#showForgotPassword');
+            const backToLoginLinks = document.querySelectorAll('.back-to-login');
+            const sendOtpButton = document.querySelector('#sendOtpButton');
+            const confirmOtpMethod = document.querySelector('#confirmOtpMethod');
+            const verifyOtpButton = document.querySelector('#verifyOtpButton');
+            
+            // Show forgot password form
+            showForgotPassword.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.classList.remove('active');
+                forgotPasswordForm.classList.add('active');
+                loginModalTitle.textContent = 'Lupa Kata Sandi';
+            });
+            
+            // Back to login from any forgot password step
+            backToLoginLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.forgot-password-step').forEach(step => {
+                        step.classList.remove('active');
+                    });
+                    loginForm.classList.add('active');
+                    loginModalTitle.textContent = 'Masuk ke SINOMAN';
+                });
+            });
+            
+            // Step 1: Send OTP
+            sendOtpButton.addEventListener('click', function() {
+                // In a real app, you would send the OTP to the server here
+                // and get back the masked phone/email for display
+                
+                // Mock data - in reality this would come from your backend
+                const mockData = {
+                    phone: '+628123456789',
+                    email: 'user@example.com',
+                    username: 'john_doe'
+                };
+                
+                document.querySelector('#phoneMasked').textContent = '+62 ••• ••• 6789';
+                document.querySelector('#emailMasked').textContent = 'us••••@•••••.com';
+                
+                forgotPasswordForm.classList.remove('active');
+                otpMethodForm.classList.add('active');
+            });
+            
+            // Step 2: Confirm OTP method
+            confirmOtpMethod.addEventListener('click', function() {
+                const selectedMethod = document.querySelector('input[name="otpMethod"]:checked').value;
+                let deliveryTarget = '';
+                
+                if (selectedMethod === 'phone') {
+                    deliveryTarget = '+62 ••• ••• 6789';
+                } else {
+                    deliveryTarget = 'us••••@•••••.com';
+                }
+                
+                document.querySelector('#otpDeliveryTarget').textContent = deliveryTarget;
+                
+                // Start countdown timer
+                startOtpCountdown();
+                
+                otpMethodForm.classList.remove('active');
+                otpVerificationForm.classList.add('active');
+            });
+            
+            // Step 3: Verify OTP
+            verifyOtpButton.addEventListener('click', function() {
+                // In a real app, you would verify the OTP with the server here
+                
+                otpVerificationForm.classList.remove('active');
+                resetPasswordForm.classList.add('active');
+                loginModalTitle.textContent = 'Atur Ulang Kata Sandi';
+            });
+            
+            // OTP input auto-focus
+            const otpInputs = document.querySelectorAll('.otp-input');
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    if (this.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Resend OTP
+            document.querySelector('#resendOtp').addEventListener('click', function() {
+                // In a real app, you would resend the OTP here
+                startOtpCountdown();
+            });
+            
+            // Countdown timer function
+            function startOtpCountdown() {
+                let timeLeft = 120; // 2 minutes in seconds
+                const countdownElement = document.querySelector('#otpCountdown');
+                const resendElement = document.querySelector('#resendOtp');
+                
+                resendElement.style.display = 'none';
+                
+                const countdown = setInterval(function() {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    
+                    countdownElement.textContent = `Kode OTP berlaku selama ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        countdownElement.textContent = 'Kode OTP telah kadaluarsa';
+                        resendElement.style.display = 'block';
+                    }
+                    
+                    timeLeft--;
+                }, 1000);
+            }
+            
+            // Reset password form submission
+            resetPasswordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would handle password reset here
+                
+                alert('Kata sandi berhasil diubah! Silakan masuk dengan kata sandi baru Anda.');
+                
+                // Reset all forms and show login
+                document.querySelectorAll('.forgot-password-step').forEach(step => {
+                    step.classList.remove('active');
+                });
+                loginForm.classList.add('active');
+                loginModalTitle.textContent = 'Masuk ke SINOMAN';
+                
+                // Clear forms
+                this.reset();
+                document.querySelector('#forgotUsername').value = '';
+                otpInputs.forEach(input => input.value = '');
+            });
+        });
 
 // Logout
 logoutButton.addEventListener('click', function() {

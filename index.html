@@ -1429,32 +1429,27 @@ logoutButton.addEventListener('click', function() {
         // Form submission
         registrationForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Check if terms are agreed
-            if (!document.getElementById('agreeTerms').checked) {
-                alert('Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.');
+    
+        // Check if terms are agreed
+                if (!document.getElementById('agreeTerms').checked) {
+        alert('Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.');
                 return;
-            }
-            
-            // In a real app, you would send the data to a server here
-            // For demo purposes, we'll just show a success message
-            
-            // Close registration modal
-            registrationModal.classList.remove('active');
-            
-            // Show success message
-            alert('Pendaftaran berhasil! Anda sekarang dapat masuk menggunakan akun yang telah dibuat.');
-            
-            // Reset form
-            registrationForm.reset();
-            currentStep = 0;
-            showStep(currentStep);
-            
-            // Mark user as logged in
-            isLoggedIn = true;
-            localStorage.setItem('isLoggedIn', 'true');
-            updateLoginStatus();
-        });
+        }
+    
+        // Close registration modal
+        registrationModal.classList.remove('active');
+    
+        // Show success message
+        alert('Pendaftaran berhasil! Silakan login menggunakan akun yang telah dibuat.');
+    
+        // Reset form
+        registrationForm.reset();
+        currentStep = 0;
+        showStep(currentStep);
+    
+        // Tampilkan modal login
+        showLoginModal();
+    });
         
         // FAQ Accordion
         document.querySelectorAll('.bg-white button').forEach(button => {

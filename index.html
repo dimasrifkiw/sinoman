@@ -435,12 +435,21 @@
             }
         }
 
-            /* Additional styles for forgot password */
+        /* Additional styles for forgot password */
                 .forgot-password-step {
                 display: none;
         }
         
         .forgot-password-step.active {
+            display: block;
+        }
+
+        /* Added styles for login form visibility toggling */
+        .login-step {
+            display: none;
+        }
+
+        .login-step.active {
             display: block;
         }
         
@@ -615,7 +624,7 @@
                 </button>
                 
                 <div class="text-center">
-                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman masuk</a>
+                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman login</a>
                 </div>
             </form>
             
@@ -1931,7 +1940,29 @@ logoutButton.addEventListener('click', function() {
         let touchStartX = 0;
         let touchEndX = 0;
 
-        carousel.addEventListener
+        carousel.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        carousel.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            if (touchEndX < touchStartX - 50) {
+                stopAutoSlide();
+                nextSlide();
+                startAutoSlide();
+            }
+
+            if (touchEndX > touchStartX + 50) {
+                stopAutoSlide();
+                prevSlide();
+                startAutoSlide();
+            }
+        }
+
         </script>
 
         <!-- Modal Dokumen -->

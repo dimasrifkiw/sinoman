@@ -36,6 +36,28 @@
             height: 4px;
             background: linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #10b981 100%);
         }
+        
+        /* Responsive adjustments for mobile */
+        @media (max-width: 640px) {
+            header .container {
+                padding-left: 3.5rem; /* space for back button */
+                justify-content: center;
+            }
+            header h1 {
+                font-size: 1.25rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: calc(100% - 4rem);
+                margin: 0 auto;
+            }
+            header a.absolute {
+                left: 0.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1rem;
+            }
+        }
         .app-header {
             display: flex;
             align-items: center;
@@ -119,7 +141,7 @@
             <a href="index.html" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white text-lg font-semibold flex items-center gap-2 hover:text-gray-200">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
-            <h1>Download Aplikasi Sinoman</h1>
+            <h1>Download Sinoman</h1>
         </div>
     </header>
     
@@ -129,7 +151,7 @@
             
             <div class="app-title">
                 <div class="version-badge">Versi 1.0</div>
-                <h2 class="text-3xl font-bold text-gray-800 mb-1">SINOMAN</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-1">APLIKASI SINOMAN</h2>
                 <p class="text-gray-600 text-lg">Sistem Informasi Antrean Perumahan</p>
             </div>
         </div>
@@ -145,7 +167,7 @@
                     <i class="fas fa-home"></i>
                 </div>
                 <h3 class="font-bold text-lg text-gray-800 mb-2">Pendaftaran Mudah</h3>
-                <p class="text-gray-600">Daftar bantuan perumahan dengan proses yang sederhana dan cepat.</p>
+                <p class="text-gray-600">Daftar bantuan perumahan / rusun dengan proses yang sederhana dan cepat.</p>
             </div>
             
             <div class="feature-card">
@@ -166,7 +188,7 @@
         </div>
         
         <div class="text-center">
-            <a href="sinoman-app.apk" download class="download-btn">
+            <a href="sinomanmobile.apk" download class="download-btn">
                 <i class="fas fa-download"></i> Unduh Sekarang
             </a>
             <p class="text-gray-500 text-sm mt-4">Ukuran Aplikasi: 15 MB • Kompatibel dengan Android 8.0+</p>

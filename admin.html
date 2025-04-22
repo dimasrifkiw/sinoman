@@ -21,6 +21,7 @@
       display: flex;
       flex-direction: column;
       padding-top: 1rem;
+      transition: background-color 0.3s;
     }
 
     .sidebar img {
@@ -60,7 +61,7 @@
       border: 3px dashed #ccc;
       padding: 2rem;
       text-align: center;
-      background-color: #ffffffd6;
+      background-color: white;
       transition: 0.3s ease;
       cursor: pointer;
       border-radius: 10px;
@@ -68,7 +69,7 @@
 
     .upload-box.dragover {
       border-color: green;
-      background-color: #e0ffe0;
+      background-color: #dee8e3;
     }
 
     .upload-box input[type="file"] {
@@ -87,63 +88,30 @@
       margin-top: 10px;
       display: none;
     }
+
     .dark-mode {
       background-color: #121212 !important;
-      color: #ffffff !important;
-    }
-
-    .sidebar {
-      width: 250px;
-      background-color: #f0e68c;
-      display: flex;
-      flex-direction: column;
-      padding-top: 1rem;
-      transition: background-color 0.3s;
+      color: #dcdce5 !important;
     }
 
     .dark-mode .sidebar {
       background-color: #333;
     }
 
-    .sidebar img {
-      width: 160px;
-      margin: 0 auto 1rem;
-    }
-
-    .sidebar-title {
-      color: #001f3f;
-      text-align: center;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
     .dark-mode .sidebar-title {
       color: #fff;
-    }
-
-    .nav-link {
-      color: #0f3553;
-      padding: 1rem;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      font-weight: 500;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      background-color: #0f3553;
-      color: white !important;
     }
 
     .dark-mode .nav-link {
       color: #ccc;
     }
 
-    .main {
-      flex: 1;
-      padding: 2rem;
+    .dark-mode .settings-form {
+      background-color: #222;
+    }
+
+    .dark-mode .upload-box {
+      background-color: #2a3b8e;
     }
 
     .settings-form {
@@ -151,10 +119,6 @@
       background-color: #ffffffd9;
       padding: 20px;
       border-radius: 10px;
-    }
-
-    .dark-mode .settings-form {
-      background-color: #222;
     }
 
     .btn-simpan {
@@ -171,9 +135,8 @@
     <a href="admin.html" class="nav-link active"><i class="fas fa-upload"></i> Upload Data</a>
     <a href="datarumah.html" class="nav-link"><i class="fas fa-home"></i> Data Rumah Tangga</a>
     <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-    <a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
+    <a href="Pengaturan.html" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
 
-    <!-- Tambahan tombol keluar-->
     <div style="margin-top: auto; padding: 1rem;">
       <a href="#" class="nav-link text-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
     </div>
@@ -262,24 +225,18 @@
       }
     });
 
-    // Fungsi logout
-  function logout() {
-    if (confirm("Apakah Anda yakin ingin keluar?")) {
-      // Jangan menghapus data dari localStorage agar tetap ada
-      // localStorage.removeItem('sinomanFiles'); // Baris ini dihapus
-      window.location.href = "index.html"; // Arahkan ke halaman login
-    }
-  }
-window.onload = function () {
-    const pengaturan = JSON.parse(localStorage.getItem("sinomanSettings") || "{}");
-
-    // Terapkan tema
-    if (pengaturan.tema === "Gelap") {
-      document.body.classList.add("dark-mode");
+    function logout() {
+      if (confirm("Apakah Anda yakin ingin keluar?")) {
+        window.location.href = "index.html";
+      }
     }
 
-    // Anda juga bisa memuat pengaturan bahasa di sini jika diperlukan
-  }
+    window.onload = function () {
+      const pengaturan = JSON.parse(localStorage.getItem("sinomanSettings") || "{}");
+      if (pengaturan.tema === "Gelap") {
+        document.body.classList.add("dark-mode");
+      }
+    }
   </script>
 </body>
 </html>

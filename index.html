@@ -608,13 +608,29 @@
                             </a>
                         </div>
                     </div>
-                    <button class="md:hidden text-white">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
+                <button id="mobileMenuButton" class="md:hidden text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
                 </div>
             </div>
         </div>
     </header>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navMenu = document.querySelector('nav.hidden.md\\:flex');
+
+        mobileMenuButton.addEventListener('click', () => {
+            if (navMenu.classList.contains('hidden')) {
+                navMenu.classList.remove('hidden');
+                navMenu.classList.add('flex', 'flex-col', 'space-y-4', 'mt-4');
+            } else {
+                navMenu.classList.add('hidden');
+                navMenu.classList.remove('flex', 'flex-col', 'space-y-4', 'mt-4');
+            }
+        });
+    </script>
 
     <!-- Login Modal -->
     <div id="loginModal" class="modal">

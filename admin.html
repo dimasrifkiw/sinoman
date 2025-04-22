@@ -87,6 +87,79 @@
       margin-top: 10px;
       display: none;
     }
+    .dark-mode {
+      background-color: #121212 !important;
+      color: #ffffff !important;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #f0e68c;
+      display: flex;
+      flex-direction: column;
+      padding-top: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .dark-mode .sidebar {
+      background-color: #333;
+    }
+
+    .sidebar img {
+      width: 160px;
+      margin: 0 auto 1rem;
+    }
+
+    .sidebar-title {
+      color: #001f3f;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .dark-mode .sidebar-title {
+      color: #fff;
+    }
+
+    .nav-link {
+      color: #0f3553;
+      padding: 1rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 500;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: #0f3553;
+      color: white !important;
+    }
+
+    .dark-mode .nav-link {
+      color: #ccc;
+    }
+
+    .main {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .settings-form {
+      max-width: 600px;
+      background-color: #ffffffd9;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .dark-mode .settings-form {
+      background-color: #222;
+    }
+
+    .btn-simpan {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -98,7 +171,6 @@
     <a href="admin.html" class="nav-link active"><i class="fas fa-upload"></i> Upload Data</a>
     <a href="datarumah.html" class="nav-link"><i class="fas fa-home"></i> Data Rumah Tangga</a>
     <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-    <a href="#" class="nav-link"><i class="fas fa-users"></i> Manajemen User</a>
     <a href="setting.html" class="nav-link"><i class="fas fa-cog"></i> Pengaturan</a>
 
     <!-- Tambahan tombol keluar-->
@@ -197,6 +269,16 @@
       // localStorage.removeItem('sinomanFiles'); // Baris ini dihapus
       window.location.href = "index.html"; // Arahkan ke halaman login
     }
+  }
+window.onload = function () {
+    const pengaturan = JSON.parse(localStorage.getItem("sinomanSettings") || "{}");
+
+    // Terapkan tema
+    if (pengaturan.tema === "Gelap") {
+      document.body.classList.add("dark-mode");
+    }
+
+    // Anda juga bisa memuat pengaturan bahasa di sini jika diperlukan
   }
   </script>
 </body>

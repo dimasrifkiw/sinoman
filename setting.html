@@ -71,13 +71,17 @@
 
     .main {
       flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 2rem;
     }
 
     .settings-form {
+      width: 100%;
       max-width: 600px;
-      background-color: #ffffffd9;
-      padding: 20px;
+      background-color: #ffffff;
+      padding: 30px;
       border-radius: 10px;
     }
 
@@ -95,148 +99,121 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <img src="sinoman.png" alt="Logo SINOMAN">
-    <h4 class="sidebar-title" id="sidebarTitle">ADMIN SINOMAN</h4>
-    <a href="admin.html" class="nav-link"><i class="fas fa-upload"></i> <span id="uploadData">Upload Data</span></a>
-    <a href="datarumah.html" class="nav-link"><i class="fas fa-home"></i> <span id="dataRumah">Data Rumah Tangga</span></a>
-    <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span id="dashboard">Dashboard</span></a>
-    <a href="manajemen.html" class="nav-link"><i class="fas fa-users"></i> <span id="manajemenUser">Manajemen User</span></a>
-    <a href="setting.html" class="nav-link active"><i class="fas fa-cog"></i> <span id="pengaturan">Pengaturan</span></a>
+    <h4 class="sidebar-title">ADMIN SINOMAN</h4>
+    <a href="admin.html" class="nav-link"><i class="fas fa-upload"></i> Upload Data</a>
+    <a href="datarumah.html" class="nav-link"><i class="fas fa-home"></i> Data Rumah Tangga</a>
+    <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="setting.html" class="nav-link active"><i class="fas fa-cog"></i> Pengaturan</a>
     <div style="margin-top: auto; padding: 1rem;">
       <a href="#" class="nav-link text-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a>
     </div>
   </div>
 
-  <!-- Konten Pengaturan -->
+  <!-- Form Pengaturan -->
   <div class="main">
-    <h2 id="judul">Pengaturan Akun</h2>
-
     <form class="settings-form" onsubmit="simpanPengaturan(event)">
+      <h4 class="text-center mb-4">Pengaturan</h4>
+
       <div class="mb-3">
-        <label for="username" class="form-label" id="usernameLabel">Nama Pengguna</label>
+        <label for="username" class="form-label">Nama Pengguna</label>
         <input type="text" class="form-control" id="username" placeholder="Masukkan nama anda">
       </div>
 
       <div class="mb-3">
-        <label for="bahasa" class="form-label" id="bahasaLabel">Bahasa</label>
-        <select class="form-select" id="bahasa" onchange="ubahBahasa()">
-            <option value="id">Bahasa Indonesia</option>
-            <option value="en">English</option>
-          </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="tema" class="form-label" id="temaLabel">Tema Tampilan</label>
+        <label for="tema" class="form-label">Tema Tampilan</label>
         <select class="form-select" id="tema" onchange="ubahTema()">
           <option>Terang</option>
           <option>Gelap</option>
         </select>
       </div>
 
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="notifikasi">
-        <label class="form-check-label" for="notifikasi" id="notifikasiLabel">Aktifkan notifikasi</label>
+      <h4 class="text-center mb-4">Keamanan</h4>
+      <div class="mb-3">
+        <label for="password" class="form-label">Ubah Kata Sandi</label>
+        <input type="password" class="form-control" id="password" placeholder="Kata sandi lama">
       </div>
 
-      <button type="submit" class="btn btn-primary btn-simpan" id="simpanBtn">Simpan Pengaturan</button>
+      <div class="mb-3">
+        <input type="password" class="form-control" id="password" placeholder="Kata sandi baru">
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="verifikasi2langkah">
+        <label class="form-check-label" for="verifikasi2langkah">Verifikasi 2 Langkah</label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="sesiAktif">
+        <label class="form-check-label" for="sesiAktif">Kelola Sesi Aktif</label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="penggunaanData">
+        <label class="form-check-label" for="penggunaanData">Penggunaan Data</label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="pelacakanLokasi">
+        <label class="form-check-label" for="pelacakanLokasi">Pelacakan Lokasi</label>
+      </div>
+
+
+      <h4 class="text-center mb-4">Notifikasi</h4>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="notifikasi">
+        <label class="form-check-label" for="notifikasi">Notifikasi Push</label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="notifikasi">
+        <label class="form-check-label" for="notifikasi">Notifikasi Email</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Simpan Pengaturan</button>
     </form>
   </div>
 
   <script>
-    // Data teks dalam bahasa Indonesia dan Inggris
-    const teks = {
-      id: {
-        judul: "Pengaturan Akun",
-        usernameLabel: "Nama Pengguna",
-        bahasaLabel: "Bahasa",
-        temaLabel: "Tema Tampilan",
-        notifikasiLabel: "Aktifkan notifikasi",
-        simpanBtn: "Simpan Pengaturan",
-        sidebarTitle: "ADMIN SINOMAN",
-        uploadData: "Upload Data",
-        dataRumah: "Data Rumah Tangga",
-        dashboard: "Dashboard",
-        manajemenUser: "Manajemen User",
-        pengaturan: "Pengaturan"
-      },
-      en: {
-        judul: "Account Settings",
-        usernameLabel: "Username",
-        bahasaLabel: "Language",
-        temaLabel: "Display Theme",
-        notifikasiLabel: "Enable Notifications",
-        simpanBtn: "Save Settings",
-        sidebarTitle: "SINOMAN ADMIN",
-        uploadData: "Upload Data",
-        dataRumah: "Household Data",
-        dashboard: "Dashboard",
-        manajemenUser: "User Management",
-        pengaturan: "Settings"
-      }
-    };
-
-    // Fungsi untuk mengubah bahasa
-    function ubahBahasa() {
-      const bahasa = document.getElementById("bahasa").value;
-      const teksHalaman = teks[bahasa];
-
-      // Mengubah teks elemen sesuai bahasa yang dipilih
-      document.getElementById("judul").innerText = teksHalaman.judul;
-      document.getElementById("usernameLabel").innerText = teksHalaman.usernameLabel;
-      document.getElementById("bahasaLabel").innerText = teksHalaman.bahasaLabel;
-      document.getElementById("temaLabel").innerText = teksHalaman.temaLabel;
-      document.getElementById("notifikasiLabel").innerText = teksHalaman.notifikasiLabel;
-      document.getElementById("simpanBtn").innerText = teksHalaman.simpanBtn;
-      document.getElementById("logoutBtn").innerText = teksHalaman.logoutBtn;
-      document.getElementById("sidebarTitle").innerText = teksHalaman.sidebarTitle;
-      document.getElementById("uploadData").innerText = teksHalaman.uploadData;
-      document.getElementById("dataRumah").innerText = teksHalaman.dataRumah;
-      document.getElementById("dashboard").innerText = teksHalaman.dashboard;
-      document.getElementById("manajemenUser").innerText = teksHalaman.manajemenUser;
-      document.getElementById("pengaturan").innerText = teksHalaman.pengaturan;
-    }
-
-    // Fungsi untuk menyimpan pengaturan ke localStorage
     function simpanPengaturan(e) {
       e.preventDefault();
       const settings = {
         username: document.getElementById("username").value,
-        bahasa: document.getElementById("bahasa").value,
         tema: document.getElementById("tema").value,
-        notifikasi: document.getElementById("notifikasi").checked
+        notifikasi: document.getElementById("notifikasi").checked,
+        password: document.getElementById("password").value,
+        verifikasi2langkah: document.getElementById("verifikasi2langkah").checked,
+        sesiAktif: document.getElementById("sesiAktif").checked,
+        penggunaanData: document.getElementById("penggunaanData").checked,
+        pelacakanLokasi: document.getElementById("pelacakanLokasi").checked
       };
 
       localStorage.setItem("sinomanSettings", JSON.stringify(settings));
       alert("Pengaturan berhasil disimpan!");
     }
 
-    // Fungsi untuk mengubah tema langsung saat dipilih
     function ubahTema() {
       const tema = document.getElementById("tema").value;
-      if (tema === "Gelap") {
-        document.body.classList.add("dark-mode");
-      } else {
-        document.body.classList.remove("dark-mode");
-      }
+      document.body.classList.toggle("dark-mode", tema === "Gelap");
     }
 
-    // Fungsi untuk logout
     function logout() {
       if (confirm("Keluar dari akun?")) {
         window.location.href = "index.html";
       }
     }
 
-    // Load pengaturan saat halaman dibuka
     window.onload = function() {
       const pengaturan = JSON.parse(localStorage.getItem("sinomanSettings") || "{}");
 
       document.getElementById("username").value = pengaturan.username || "";
-      document.getElementById("bahasa").value = pengaturan.bahasa || "id";
       document.getElementById("tema").value = pengaturan.tema || "Terang";
       document.getElementById("notifikasi").checked = pengaturan.notifikasi || false;
+      document.getElementById("password").value = pengaturan.password || "";
+      document.getElementById("verifikasi2langkah").checked = pengaturan.verifikasi2langkah || false;
+      document.getElementById("sesiAktif").checked = pengaturan.sesiAktif || false;
+      document.getElementById("penggunaanData").checked = pengaturan.penggunaanData || false;
+      document.getElementById("pelacakanLokasi").checked = pengaturan.pelacakanLokasi || false;
 
-      // Terapkan bahasa dan tema saat halaman dimuat
-      ubahBahasa();
       if (pengaturan.tema === "Gelap") {
         document.body.classList.add("dark-mode");
       }
@@ -244,3 +221,4 @@
   </script>
 </body>
 </html>
+

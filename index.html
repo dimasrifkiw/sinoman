@@ -435,6 +435,50 @@
             }
         }
 
+        /* Additional responsive improvements */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        header .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .carousel {
+                height: 200px;
+            }
+
+            .text-4xl {
+                font-size: 1.75rem;
+            }
+
+            .text-5xl {
+                font-size: 2rem;
+            }
+
+            #registerNowButton {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                font-size: 0.875rem;
+            }
+
+            nav.hidden.md\\:flex {
+                display: none !important;
+            }
+
+            button.md\\:hidden {
+                display: block !important;
+            }
+        }
+
         /* Additional styles for forgot password */
                 .forgot-password-step {
                 display: none;
@@ -547,6 +591,7 @@
                     <a href="#about" class="nav-link">Tentang</a>
                     <a href="#queue" class="nav-link">Cek Antrian</a>
                     <a href="#contact" class="nav-link">Kontak</a>
+                    <a href="download.html" class="nav-link">Download aplikasi sinoman</a>
                 </nav>
                 <div class="flex items-center space-x-4">
                     <div class="relative">
@@ -624,7 +669,7 @@
                 </button>
                 
                 <div class="text-center">
-                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman login</a>
+                    <a href="#" class="back-to-login"><i class="fas fa-arrow-left mr-1"></i> Kembali ke halaman masuk</a>
                 </div>
             </form>
             
@@ -1939,29 +1984,6 @@ logoutButton.addEventListener('click', function() {
         // Touch events for mobile swipe
         let touchStartX = 0;
         let touchEndX = 0;
-
-        carousel.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        carousel.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleGesture();
-        });
-
-        function handleGesture() {
-            if (touchEndX < touchStartX - 50) {
-                stopAutoSlide();
-                nextSlide();
-                startAutoSlide();
-            }
-
-            if (touchEndX > touchStartX + 50) {
-                stopAutoSlide();
-                prevSlide();
-                startAutoSlide();
-            }
-        }
 
         </script>
 
